@@ -52,4 +52,4 @@
             app:navGraph="@navigation/bottom_nav" />
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
