@@ -18,11 +18,10 @@
 
         <Button
             android:id="@+id/button2"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_margin="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="0dp"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
             android:onClick="signUpClicked"
@@ -42,11 +41,10 @@
 
         <Button
             android:id="@+id/buttonLogIn"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_margin="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="0dp"
             android:layout_marginStart="25dp"
-            android:layout_marginTop="25dp"
             android:layout_marginEnd="25dp"
             android:layout_marginBottom="25dp"
             android:onClick="logClicked"
@@ -66,6 +64,7 @@
             android:layout_height="0dp"
             android:layout_margin="0dp"
             android:layout_marginBottom="100dp"
+            android:background="@color/purple_200"
             android:ems="10"
             android:hint="Password"
             android:inputType="textPersonName|textPassword"
@@ -92,24 +91,13 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/topConstraint"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="731dp"
+        android:layout_height="72dp"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.6"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@+id/textView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.496"
-            tools:srcCompat="@tools:sample/avatars" />
 
         <TextView
             android:id="@+id/textView"
@@ -120,10 +108,10 @@
             android:text="WELCOME"
             android:textAppearance="@style/TextAppearance.AppCompat.Display2"
             android:textColor="@color/white"
-            app:layout_constraintTop_toBottomOf="@+id/imageView"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

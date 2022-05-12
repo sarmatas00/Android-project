@@ -12,6 +12,6 @@
     <string name="signUpEmailOut">E-Mail</string>
     <string name="signUpPassOut">Password</string>
     <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
+    <string name="menu_gallery">My items</string>
     <string name="menu_slideshow">Slideshow</string>
 </resources>

@@ -33,6 +33,7 @@ public class LogInSignUp extends AppCompatActivity {
 
 
     public void logClicked(View view) {
+
         System.out.println("loginclicked");
 
         MyDBHandler db=new MyDBHandler(this,null,null,1);

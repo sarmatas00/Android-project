@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
+import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
@@ -24,6 +25,7 @@ public class Main2Activity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMain2Binding binding;
+    private TextView stat1,stat2,stat3,stat4;
     private PieChart pieChart;
 
     @Override
@@ -79,26 +81,34 @@ public class Main2Activity extends AppCompatActivity {
         // Set the data and color to the pie chart
         pieChart.addPieSlice(
                 new PieModel(
-                        "R",
+                        "stat1",
                         40,
                         Color.parseColor("#FFA726")));
         pieChart.addPieSlice(
                 new PieModel(
-                        "Python",
+                        "stat2",
                         30,
                         Color.parseColor("#66BB6A")));
         pieChart.addPieSlice(
                 new PieModel(
-                        "C++",
+                        "stat3",
                         40,
                         Color.parseColor("#EF5350")));
         pieChart.addPieSlice(
                 new PieModel(
-                        "Java",
+                        "stat4",
                         20,
                         Color.parseColor("#29B6F6")));
 
         // To animate the pie chart
         pieChart.startAnimation();
+        stat1=findViewById(R.id.stat1);
+        stat2=findViewById(R.id.stat2);
+        stat3=findViewById(R.id.stat3);
+        stat4=findViewById(R.id.stat4);
+        stat1.setText("DICKS");
+        stat2.setText("BALLS");
+        stat3.setText("URMOM");
+        stat4.setText("ISGAY");
     }
 }
