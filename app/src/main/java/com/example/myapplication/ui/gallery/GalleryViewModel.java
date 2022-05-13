@@ -11,6 +11,7 @@ public class GalleryViewModel extends ViewModel {
     public GalleryViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is gallery fragment");
+        System.out.println("GalleryViewModelCreated");
     }
 
     public LiveData<String> getText() {

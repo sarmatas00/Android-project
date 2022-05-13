@@ -11,6 +11,7 @@ public class SlideshowViewModel extends ViewModel {
     public SlideshowViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is slideshow fragment");
+        System.out.println("SlideShowViewModelCreated");
     }
 
     public LiveData<String> getText() {

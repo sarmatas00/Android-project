@@ -26,7 +26,7 @@ public class Main2Activity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMain2Binding binding;
     private TextView stat1,stat2,stat3,stat4;
-    private PieChart pieChart;
+    private static PieChart pieChart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,13 +34,14 @@ public class Main2Activity extends AppCompatActivity {
 
         binding = ActivityMain2Binding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
         setSupportActionBar(binding.appBarMain2.toolbar);
         binding.appBarMain2.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                System.out.println(findViewById(R.id.piechart));
+                setData(view);
             }
         });
         DrawerLayout drawer = binding.drawerLayout;
@@ -54,8 +55,10 @@ public class Main2Activity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main2);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-        pieChart = findViewById(R.id.piechart);
-        setData();
+
+
+
+
 
     }
 
@@ -72,9 +75,11 @@ public class Main2Activity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
-    private void setData()
+    public  void setData(View view)
     {
+        System.out.println("called");
 
+        pieChart=findViewById(R.id.piechart);
         // Set the percentage of language used
 
 
@@ -102,13 +107,17 @@ public class Main2Activity extends AppCompatActivity {
 
         // To animate the pie chart
         pieChart.startAnimation();
-        stat1=findViewById(R.id.stat1);
-        stat2=findViewById(R.id.stat2);
-        stat3=findViewById(R.id.stat3);
-        stat4=findViewById(R.id.stat4);
+        /*
+        stat1=getView().findViewById(R.id.stat1);
+        stat2=getView().findViewById(R.id.stat2);
+        stat3=getView().findViewById(R.id.stat3);
+        stat4=getView().findViewById(R.id.stat4);
         stat1.setText("DICKS");
         stat2.setText("BALLS");
         stat3.setText("URMOM");
         stat4.setText("ISGAY");
+
+         */
     }
+
 }
