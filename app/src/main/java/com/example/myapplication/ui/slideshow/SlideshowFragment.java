@@ -25,8 +25,6 @@ public class SlideshowFragment extends Fragment {
         View root = binding.getRoot();
         System.out.println("SlideShowFragmentOnCreateView");
 
-        final TextView textView = binding.textSlideshow;
-        slideshowViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 
