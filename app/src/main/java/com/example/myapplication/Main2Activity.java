@@ -1,11 +1,13 @@
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
 import android.widget.TextView;
 
+import com.example.myapplication.ui.gallery.GalleryFragment;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
@@ -15,21 +17,29 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.databinding.ActivityMain2Binding;
 
 import org.eazegraph.lib.charts.PieChart;
 import org.eazegraph.lib.models.PieModel;
 
+import java.util.ArrayList;
+
 public class Main2Activity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
+    private String username;
     private ActivityMain2Binding binding;
     private TextView stat1,stat2,stat3,stat4;
     private static PieChart pieChart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Intent intent=getIntent();
+        username=intent.getStringExtra("userName");
         super.onCreate(savedInstanceState);
 
         binding = ActivityMain2Binding.inflate(getLayoutInflater());
@@ -41,7 +51,7 @@ public class Main2Activity extends AppCompatActivity {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
                 System.out.println(findViewById(R.id.piechart));
-                setData(view);
+                //GalleryFragment.addItem(new Item("dicks",69));
             }
         });
         DrawerLayout drawer = binding.drawerLayout;
@@ -55,7 +65,8 @@ public class Main2Activity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main2);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-
+        System.out.println("username "+username);
+        seed();
 
 
 
@@ -75,49 +86,21 @@ public class Main2Activity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
-    public  void setData(View view)
-    {
-        System.out.println("called");
-
-        pieChart=findViewById(R.id.piechart);
-        // Set the percentage of language used
-
-
-        // Set the data and color to the pie chart
-        pieChart.addPieSlice(
-                new PieModel(
-                        "stat1",
-                        40,
-                        Color.parseColor("#FFA726")));
-        pieChart.addPieSlice(
-                new PieModel(
-                        "stat2",
-                        30,
-                        Color.parseColor("#66BB6A")));
-        pieChart.addPieSlice(
-                new PieModel(
-                        "stat3",
-                        40,
-                        Color.parseColor("#EF5350")));
-        pieChart.addPieSlice(
-                new PieModel(
-                        "stat4",
-                        20,
-                        Color.parseColor("#29B6F6")));
-
-        // To animate the pie chart
-        pieChart.startAnimation();
-        /*
-        stat1=getView().findViewById(R.id.stat1);
-        stat2=getView().findViewById(R.id.stat2);
-        stat3=getView().findViewById(R.id.stat3);
-        stat4=getView().findViewById(R.id.stat4);
-        stat1.setText("DICKS");
-        stat2.setText("BALLS");
-        stat3.setText("URMOM");
-        stat4.setText("ISGAY");
-
-         */
+    //seeds database
+    public  void seed(){
+        MyDBHandler db=new MyDBHandler(this,null,null,1);
+        db.addItem(new Item("chicken",2));
+        db.addItem(new Item("dicks",2));
+        db.addItem(new Item("balls",2));
+        db.addItem(new Item("curry",2));
     }
+
+    public String getUsername(){
+        return username;
+    }
+
+
+
+
 
 }

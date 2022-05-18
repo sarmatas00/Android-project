@@ -10,6 +10,7 @@
     <string name="sign_up">SIGN-UP</string>
     <string name="log_in">LOG-IN</string>
 
+    <string name="add1">Add</string>
     <string name="signUpUsernameOut">Username</string>
     <string name="signUpEmailOut">E-Mail</string>
     <string name="signUpPassOut">Password</string>

@@ -14,6 +14,7 @@ public class LogInSignUp extends AppCompatActivity {
     private Button logInBtn,signUpBtn;
     private EditText username,password;
 
+    //finds views which are the username/pass editTexts
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,10 +33,12 @@ public class LogInSignUp extends AppCompatActivity {
     }
 
 
+    //When log in button is clicked
     public void logClicked(View view) {
 
         System.out.println("loginclicked");
 
+        //Looking in database for username with account and checking if pass is matching given one
         MyDBHandler db=new MyDBHandler(this,null,null,1);
         Account acc=db.findAccount(username.getText().toString());
         if(acc==null) {
@@ -45,14 +48,16 @@ public class LogInSignUp extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Incorrect Password", Toast.LENGTH_SHORT).show();
             return;
         }
+        //Account found begins main activity
         Intent i=new Intent(this,Main2Activity.class);
-        CharSequence userName=this.username.getText();
+        String userName=this.username.getText().toString();
         CharSequence pass=password.getText();
         i.putExtra("userName",userName);
         i.putExtra("pass",pass);
         startActivity(i);
     }
 
+    //Sign up button begins CreateAccount activity
     public void signUpClicked(View view) {
         System.out.println("signupclicked");
         Intent i=new Intent(this,CreateAccount.class);
