@@ -21,7 +21,6 @@ public class MyDBHandler extends SQLiteOpenHelper {
     public static final String TABLE_ACCOUNT_HAS_ITEMS="userHasItems";
     public static final String COLUMN_AMOUNT="amount";
     public static final String COLUMN_COST="cost";
-    public static final String TABLE_LOGGED_IN="loggedIn";
 
     public MyDBHandler(Context context,String name,SQLiteDatabase.CursorFactory factory,int version){
         super(context,DATABASE_NAME,factory,DATABASE_VERSION);
@@ -51,34 +50,19 @@ public class MyDBHandler extends SQLiteOpenHelper {
                 COLUMN_NAME+" TEXT,"+
                 COLUMN_AMOUNT+" INTEGER, PRIMARY KEY ("+COLUMN_USERNAME+", "+COLUMN_NAME+"))";
 
-        String CREATE_LOGGED_IN_TABLE="CREATE TABLE IF NOT EXISTS "+
-                TABLE_LOGGED_IN+"("+
-                COLUMN_USERNAME+" TEXT PRIMARY KEY"+")";
 
         sqLiteDatabase.execSQL(CREATE_ACCOUNTS_TABLE);
         sqLiteDatabase.execSQL(CREATE_ITEMS_TABLE);
         sqLiteDatabase.execSQL(CREATE_ACCOUNT_HAS_ITEMS_TABLE);
-        sqLiteDatabase.execSQL(CREATE_LOGGED_IN_TABLE);
     }
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+TABLE_ACCOUNTS);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+TABLE_ITEMS);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+TABLE_ACCOUNT_HAS_ITEMS);
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+TABLE_LOGGED_IN);
         onCreate(sqLiteDatabase);
     }
-    public void addLogged(String username){
-        ContentValues values=new ContentValues();
-        values.put(COLUMN_USERNAME,username);
-        SQLiteDatabase db=this.getWritableDatabase();
-        db.insert(TABLE_LOGGED_IN,null,values);
-        db.close();
-    }
-    public void clearLogged(){
-        SQLiteDatabase db=this.getWritableDatabase();
-        //db.delete()
-    }
+
     public void addAccount(Account acc){
         ContentValues values=new ContentValues();
         values.put(COLUMN_USERNAME,acc.getUsername());

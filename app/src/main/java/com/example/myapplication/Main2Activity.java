@@ -11,6 +11,8 @@ import com.example.myapplication.ui.gallery.GalleryFragment;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -31,16 +33,16 @@ import java.util.ArrayList;
 public class Main2Activity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
-    private String username;
+    private String username,email;
     private ActivityMain2Binding binding;
-    private TextView stat1,stat2,stat3,stat4;
-    private static PieChart pieChart;
+    private TextView navUser,navEm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Intent intent=getIntent();
         username=intent.getStringExtra("userName");
         super.onCreate(savedInstanceState);
+
 
         binding = ActivityMain2Binding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -66,6 +68,7 @@ public class Main2Activity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
         System.out.println("username "+username);
+
         seed();
 
 
@@ -73,10 +76,20 @@ public class Main2Activity extends AppCompatActivity {
 
     }
 
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main2, menu);
+        navUser=(TextView) findViewById(R.id.navUsername);
+        navEm=(TextView) findViewById(R.id.navEmail);
+        navUser.setText(username);
+        MyDBHandler db=new MyDBHandler(this,null,null,1);
+        Account acc=db.findAccount(username);
+        email=acc.getEmail();
+        navEm.setText(email);
+        System.out.println("navuserview "+navUser);
         return true;
     }
 

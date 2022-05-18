@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 public class LogInSignUp extends AppCompatActivity {
     private Button logInBtn,signUpBtn;
-    private EditText username,password;
+    private EditText username,password,email;
 
     //finds views which are the username/pass editTexts
     @Override
@@ -51,7 +51,7 @@ public class LogInSignUp extends AppCompatActivity {
         //Account found begins main activity
         Intent i=new Intent(this,Main2Activity.class);
         String userName=this.username.getText().toString();
-        CharSequence pass=password.getText();
+        String pass=password.getText().toString();
         i.putExtra("userName",userName);
         i.putExtra("pass",pass);
         startActivity(i);
