@@ -11,7 +11,10 @@
     <string name="log_in">LOG-IN</string>
 
     <string name="addItem">Add Item</string>
+    <string name="logOut">Log-Out</string>
     <string name="add1">Add</string>
+    <string name="goBack">Go Back</string>
+    <string name="areYouSure">Log-Out?</string>
     <string name="signUpUsernameOut">Username</string>
     <string name="signUpEmailOut">E-Mail</string>
     <string name="signUpPassOut">Password</string>

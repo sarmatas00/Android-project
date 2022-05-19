@@ -24,18 +24,4 @@
 
     <include layout="@layout/content_main2" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginEnd="@dimen/fab_margin"
-        android:layout_marginBottom="16dp"
-        android:backgroundTint="@color/purple_500"
-        android:focusable="auto"
-        android:tint="@color/white"
-        app:backgroundTint="@color/white"
-        app:srcCompat="@drawable/ic_baseline_add_24"
-        tools:ignore="SpeakableTextPresentCheck" />
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
