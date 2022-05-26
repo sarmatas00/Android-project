@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+//TODO make landscape layout not trash
 //works fine
 public class LogInSignUp extends AppCompatActivity {
     private Button logInBtn,signUpBtn;

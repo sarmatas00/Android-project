@@ -10,6 +10,9 @@
     <string name="sign_up">SIGN-UP</string>
     <string name="log_in">LOG-IN</string>
 
+    <string name="itemCost">Item Cost</string>
+    <string name="itemAmount">Item Amount</string>
+    <string name="itemName">Item Name</string>
     <string name="addItem">Add Item</string>
     <string name="logOut">Log-Out</string>
     <string name="add1">Add</string>
