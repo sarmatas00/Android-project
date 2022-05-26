@@ -9,7 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-//Create account activity when sign-up in LogInSignUp activity is clicked
+//Create account activity when sign-up in LogInSignUp activity is clicked works fine
 public class CreateAccount extends AppCompatActivity {
     //ac contains username,email,password 3 strings
     private EditText userIn,emailIn,passIn;

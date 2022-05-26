@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
-
+//This class handles the SQL database here we create the tables and create methods for them
 public class MyDBHandler extends SQLiteOpenHelper {
     //all table names and column names must be listed here
     private static final int DATABASE_VERSION=1;
@@ -63,6 +63,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
         onCreate(sqLiteDatabase);
     }
 
+    //This is how we add an account to database but getting an account item and creating a new row
     public void addAccount(Account acc){
         ContentValues values=new ContentValues();
         values.put(COLUMN_USERNAME,acc.getUsername());
@@ -72,6 +73,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
         sqLiteDatabase.insert(TABLE_ACCOUNTS,null,values);
         sqLiteDatabase.close();
     }
+    //same for item
     public void addItem(Item it){
         if(findItem(it.getName())==null) {
             ContentValues values = new ContentValues();
@@ -90,17 +92,19 @@ public class MyDBHandler extends SQLiteOpenHelper {
         SQLiteDatabase sqLiteDatabase=this.getWritableDatabase();
         sqLiteDatabase.close();
     }
-    //find based on username
+    //find Account based on username users helper function
     public Account findAccount(String username){
         String query="SELECT * FROM "+TABLE_ACCOUNTS+" WHERE "+COLUMN_USERNAME+" = '"+username+"'";
         return queryAccountDB(query);
     }
+    //Find item based on its name uses helper function queryItemDB
     public Item findItem(String itemName){
         String query="SELECT * FROM "+TABLE_ITEMS+" WHERE "+COLUMN_NAME+" = '"+itemName+"'";
         return queryItemDB(query);
     }
 
     /*
+    TODO grab user Items using username and return the arraylist, gets called from My items fragment (gallery fragment)
     public ArrayList<Item> findUserItems(String username){
         String query="SELECT * FROM "+TABLE_ITEMS+" WHERE "+COLUMN_USERNAME+" = "+username;
         ArrayList<Item> userItems=new ArrayList<>();
@@ -123,6 +127,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
      */
 
 
+    //Helper function for finding items
     public Account queryAccountDB(String query){
         SQLiteDatabase sqLiteDatabase=this.getWritableDatabase();
         Cursor cursor=sqLiteDatabase.rawQuery(query,null);
@@ -139,6 +144,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
         sqLiteDatabase.close();
         return account;
     }
+    //helper for items
     public Item queryItemDB(String query){
         SQLiteDatabase sqLiteDatabase=this.getWritableDatabase();
         Cursor cursor=sqLiteDatabase.rawQuery(query,null);
@@ -154,6 +160,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
         sqLiteDatabase.close();
         return item;
     }
+    //deletes currently user doesnt have that ability
     public boolean deleteAccount(String username){
         boolean result=false;
         Account account=findAccount(username);

@@ -25,6 +25,7 @@ public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
     private  PieChart pieChart;
     private  TextView stat1,stat2,stat3,stat4;
+    private View view1,view2,view3,view4;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -39,6 +40,7 @@ public class HomeFragment extends Fragment {
 
 
             // This callback will only be called when MyFragment is at least Started.
+        //This de-activates back button when user is in home page
             OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
                 @Override
                 public void handleOnBackPressed() {
@@ -65,6 +67,11 @@ public class HomeFragment extends Fragment {
         binding = null;
     }
 
+    //here the data displayed in home page are made
+    /*TODO get actual data from user (user items) calculate the 4 items user spend most money on and display 1)in the pie chart 2)in the text
+       views stat1,..,stat4 and match colors of pie with view colors (view1,...,view4)
+
+    */
     public  void setData(View view)
     {
         System.out.println("called");

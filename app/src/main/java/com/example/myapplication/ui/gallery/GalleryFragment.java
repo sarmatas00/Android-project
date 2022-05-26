@@ -46,21 +46,27 @@ public class GalleryFragment extends Fragment {
         return root;
     }
 
+    //Runs after every view is created and you have access to all the elements
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        //finds the recycler from layout
         RecyclerView rec=view.findViewById(R.id.recycle);
         System.out.println(rec);
+        //getActivity so we can find the username
         Main2Activity activity=(Main2Activity)getActivity();
         //HERE WE HAVE USERNAME FOR DATA ACCESING U CAN PASS OTHER DATA SAME WAY
         System.out.println("We be in fragment gallery "+activity.getUsername());
+        //seeds some data
         enterData();
+        //pass recycler to setAdapter, which creates the recycler view with the itemList arrayList
         setAdapter(rec);
 
 
     }
 
     //seeds db with premade items
+    //TODO grab user items from table USER_HAS_ITEMS and add them to the arraylist, since it currently displays random items and not user items
     private void enterData(){
         itemList=new ArrayList<>();
         itemList.add(new Item("chicken",2));
@@ -69,6 +75,7 @@ public class GalleryFragment extends Fragment {
         itemList.add(new Item("curry",2));
 
     }
+    //Standard code for Recycler creation
     private void setAdapter(RecyclerView recyclerView){
         ItemAdapter adapter=new ItemAdapter(itemList);
         RecyclerView.LayoutManager layoutManager=new LinearLayoutManager(getActivity().getApplicationContext());

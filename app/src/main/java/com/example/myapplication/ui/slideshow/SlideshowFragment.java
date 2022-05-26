@@ -11,7 +11,10 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.myapplication.databinding.FragmentSlideshowBinding;
-
+//This is the add Item option from navigation menu now its empty
+/*TODO create layout with recycler view that contains all items from database and a layout to allow user to add one of the items to his collection
+   also create layout that allows user to create a new item and add it to database
+ */
 public class SlideshowFragment extends Fragment {
 
     private FragmentSlideshowBinding binding;

@@ -30,7 +30,7 @@ import org.eazegraph.lib.charts.PieChart;
 import org.eazegraph.lib.models.PieModel;
 
 import java.util.ArrayList;
-
+//Main activity contains all the menu option fragments inside it, gets called from log-in and sign-up
 public class Main2Activity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
@@ -53,6 +53,7 @@ public class Main2Activity extends AppCompatActivity {
         NavigationView navigationView = binding.navView;
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
+        //Here we add our menu options
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow,R.id.nav_logout)
                 .setOpenableLayout(drawer)
@@ -93,6 +94,7 @@ public class Main2Activity extends AppCompatActivity {
                 || super.onSupportNavigateUp();
     }
     //seeds database
+    //TODO seed properly and use the data on addItems menu
     public  void seed(){
         MyDBHandler db=new MyDBHandler(this,null,null,1);
         db.addItem(new Item("chicken",2));

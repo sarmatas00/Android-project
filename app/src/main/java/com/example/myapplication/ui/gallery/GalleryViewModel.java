@@ -3,7 +3,7 @@ package com.example.myapplication.ui.gallery;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
+//not used
 public class GalleryViewModel extends ViewModel {
 
     private final MutableLiveData<String> mText;

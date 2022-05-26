@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -9,7 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
+//works fine
 public class LogInSignUp extends AppCompatActivity {
     private Button logInBtn,signUpBtn;
     private EditText username,password,email;
@@ -29,6 +30,11 @@ public class LogInSignUp extends AppCompatActivity {
         }
 
 
+
+
+    }
+    @Override
+    public void onBackPressed(){
 
     }
 

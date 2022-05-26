@@ -12,7 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-
+//Log out option in navigation drawer menu works
+//TODO make layout not so ugly
 public class LogOut extends Fragment {
 
 
