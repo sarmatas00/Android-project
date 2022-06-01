@@ -7,8 +7,8 @@ public class Item {
     private String name;
     private double cost;
     public Item(){}
-    public Item(String name,double cost){
-        this.cost=cost;
+    public Item(String name){
+
         this.name=name;
     }
 
@@ -22,11 +22,5 @@ public class Item {
     }
 
 
-    public double getCost() {
-        return cost;
-    }
 
-    public void setCost(double cost) {
-        this.cost = cost;
-    }
 }

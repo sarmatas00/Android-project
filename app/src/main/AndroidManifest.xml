@@ -10,8 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
         <activity
+            android:name=".AddItem"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"/>
+        <activity
             android:name=".CreateAccount"
             android:exported="false" />
+
         <activity
             android:name=".LogInSignUp"
             android:exported="true">

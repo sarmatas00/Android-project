@@ -13,12 +13,23 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.myapplication.Main2Activity;
+import com.example.myapplication.HomeViewModel;
 import com.example.myapplication.R;
 import com.example.myapplication.databinding.FragmentHomeBinding;
 
-import org.eazegraph.lib.charts.PieChart;
+
 import org.eazegraph.lib.models.PieModel;
+
+import com.github.mikephil.charting.animation.Easing;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.utils.ColorTemplate;
+
+import java.util.ArrayList;
 
 public class HomeFragment extends Fragment {
 
@@ -26,17 +37,16 @@ public class HomeFragment extends Fragment {
     private  PieChart pieChart;
     private  TextView stat1,stat2,stat3,stat4;
     private View view1,view2,view3,view4;
+    private String username;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        HomeViewModel homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
+
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        System.out.println(root);
-        System.out.println("HomeFragmentOnCreateView");
+
 
 
             // This callback will only be called when MyFragment is at least Started.
@@ -59,6 +69,20 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         setData(view);
 
+       //get connected user's username from activity
+        if(getActivity()!=null) {
+            HomeViewModel homeViewModel =
+                    new ViewModelProvider(getActivity()).get(HomeViewModel.class);
+
+            homeViewModel.getText().observe(getViewLifecycleOwner(), s -> {
+                username=s;
+            });
+        }
+
+        pieChart = view.findViewById(R.id.piechart);
+        setupPieChart();
+        loadPieChartData();
+
     }
 
     @Override
@@ -68,14 +92,10 @@ public class HomeFragment extends Fragment {
     }
 
     //here the data displayed in home page are made
-    /*TODO get actual data from user (user items) calculate the 4 items user spend most money on and display 1)in the pie chart 2)in the text
-       views stat1,..,stat4 and match colors of pie with view colors (view1,...,view4)
-
-    */
     public  void setData(View view)
     {
         System.out.println("called");
-
+        /*
         pieChart=view.findViewById(R.id.piechart);
         // Set the percentage of language used
 
@@ -104,6 +124,9 @@ public class HomeFragment extends Fragment {
 
         // To animate the pie chart
         pieChart.startAnimation();
+        */
+
+
         /*
         stat1=getView().findViewById(R.id.stat1);
         stat2=getView().findViewById(R.id.stat2);
@@ -115,6 +138,58 @@ public class HomeFragment extends Fragment {
         stat4.setText("ISGAY");
 
          */
+    }
+
+
+    private void setupPieChart() {
+        pieChart.setDrawHoleEnabled(true);
+        pieChart.setUsePercentValues(true);
+        pieChart.setEntryLabelTextSize(12);
+        pieChart.setEntryLabelColor(Color.BLACK);
+        pieChart.setCenterText("Spending by Category");
+        pieChart.setCenterTextSize(24);
+        pieChart.getDescription().setEnabled(false);
+
+        Legend l = pieChart.getLegend();
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
+        l.setOrientation(Legend.LegendOrientation.VERTICAL);
+        l.setTextSize(15);
+        l.setDrawInside(false);
+        l.setEnabled(true);
+    }
+
+    private void loadPieChartData() {
+        ArrayList<PieEntry> entries = new ArrayList<>();
+        entries.add(new PieEntry(0.2f, "Food & Dining"));
+        entries.add(new PieEntry(0.15f, "Medical"));
+        entries.add(new PieEntry(0.10f, "Entertainment"));
+        entries.add(new PieEntry(0.25f, "Electricity and Gas"));
+        entries.add(new PieEntry(0.3f, "Housing"));
+
+        ArrayList<Integer> colors = new ArrayList<>();
+        for (int color: ColorTemplate.MATERIAL_COLORS) {
+            colors.add(color);
+        }
+
+        for (int color: ColorTemplate.VORDIPLOM_COLORS) {
+            colors.add(color);
+        }
+
+        PieDataSet dataSet = new PieDataSet(entries, "Expense item");
+        dataSet.setColors(colors);
+
+
+        PieData data = new PieData(dataSet);
+        data.setDrawValues(true);
+        data.setValueFormatter(new PercentFormatter(pieChart));
+        data.setValueTextSize(12f);
+        data.setValueTextColor(Color.BLACK);
+
+        pieChart.setData(data);
+        pieChart.invalidate();
+
+        pieChart.animateY(1400, Easing.EaseInOutQuad);
     }
 
 }

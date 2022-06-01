@@ -7,22 +7,17 @@
     android:orientation="vertical"
     tools:context=".ui.home.HomeFragment">
 
-    <LinearLayout
-        android:id="@+id/linearTop"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.7"
-        android:orientation="horizontal">
 
-        <org.eazegraph.lib.charts.PieChart
+
+        <com.github.mikephil.charting.charts.PieChart
             android:id="@+id/piechart"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            android:padding="0dp"
-            android:visibility="visible"
-            tools:visibility="visible" />
-    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearBottom"
@@ -78,7 +73,7 @@
                 android:id="@+id/view3"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:background="@color/purple_200"
+                android:background="@color/black"
                 app:layout_constraintBottom_toTopOf="@+id/view4"
                 app:layout_constraintEnd_toStartOf="@+id/stat3"
                 app:layout_constraintHorizontal_bias="0.541"

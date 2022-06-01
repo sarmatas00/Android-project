@@ -1,35 +1,22 @@
 package com.example.myapplication;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.view.View;
 import android.view.Menu;
 import android.widget.TextView;
 
-import com.example.myapplication.ui.gallery.GalleryFragment;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.databinding.ActivityMain2Binding;
 
-import org.eazegraph.lib.charts.PieChart;
-import org.eazegraph.lib.models.PieModel;
-
-import java.util.ArrayList;
 //Main activity contains all the menu option fragments inside it, gets called from log-in and sign-up
 public class Main2Activity extends AppCompatActivity {
 
@@ -38,11 +25,15 @@ public class Main2Activity extends AppCompatActivity {
     private ActivityMain2Binding binding;
     private TextView navUser,navEm;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Intent intent=getIntent();
         username=intent.getStringExtra("userName");
         super.onCreate(savedInstanceState);
+
+        HomeViewModel viewModel=new ViewModelProvider(this).get(HomeViewModel.class);
+        viewModel.setText(username);
 
 
         binding = ActivityMain2Binding.inflate(getLayoutInflater());
@@ -97,10 +88,10 @@ public class Main2Activity extends AppCompatActivity {
     //TODO seed properly and use the data on addItems menu
     public  void seed(){
         MyDBHandler db=new MyDBHandler(this,null,null,1);
-        db.addItem(new Item("chicken",2));
-        db.addItem(new Item("dicks",2));
-        db.addItem(new Item("balls",2));
-        db.addItem(new Item("curry",2));
+        db.addItem(new Item("chicken"));
+        db.addItem(new Item("dicks"));
+        db.addItem(new Item("balls"));
+        db.addItem(new Item("curry"));
     }
 
     public String getUsername(){

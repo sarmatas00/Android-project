@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.home;
+package com.example.myapplication;
 
 import android.graphics.Color;
 import android.widget.TextView;
@@ -21,13 +21,15 @@ public class HomeViewModel extends ViewModel {
 
     public HomeViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is home fragment");
-        System.out.println("HomeViewModelCreated");
 
     }
 
     public LiveData<String> getText() {
         return mText;
+    }
+
+    public void setText(String text) {
+        mText.setValue(text);
     }
 
 }

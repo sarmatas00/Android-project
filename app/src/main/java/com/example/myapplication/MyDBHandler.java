@@ -39,22 +39,23 @@ public class MyDBHandler extends SQLiteOpenHelper {
         //ITEMS(NAME STRING KEY, COST DOUBLE)
         String CREATE_ITEMS_TABLE="CREATE TABLE IF NOT EXISTS "+
                 TABLE_ITEMS+"("+
-                COLUMN_NAME+" TEXT PRIMARY KEY,"+
-                COLUMN_COST+" DOUBLE"
-                + ")";
+                COLUMN_NAME+" TEXT PRIMARY KEY" + ")";
 
         //ACCOUNT_HAS_ITEMS(USERNAME,NAME,AMOUNT) NAME IS ITEMNAME USERNAME+NAME PRIMARY KEY
         String CREATE_ACCOUNT_HAS_ITEMS_TABLE="CREATE TABLE IF NOT EXISTS "+
                 TABLE_ACCOUNT_HAS_ITEMS+"("+
                 COLUMN_USERNAME+" TEXT,"+
                 COLUMN_NAME+" TEXT,"+
-                COLUMN_AMOUNT+" INTEGER, PRIMARY KEY ("+COLUMN_USERNAME+", "+COLUMN_NAME+"))";
+                COLUMN_AMOUNT+" TEXT, PRIMARY KEY ("+COLUMN_USERNAME+", "+COLUMN_NAME+"))";
 
 
         sqLiteDatabase.execSQL(CREATE_ACCOUNTS_TABLE);
         sqLiteDatabase.execSQL(CREATE_ITEMS_TABLE);
         sqLiteDatabase.execSQL(CREATE_ACCOUNT_HAS_ITEMS_TABLE);
+
+
     }
+
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+TABLE_ACCOUNTS);
@@ -70,28 +71,51 @@ public class MyDBHandler extends SQLiteOpenHelper {
         values.put(COLUMN_EMAIL,acc.getEmail());
         values.put(COLUMN_PASSWORD,acc.getPassword());
         SQLiteDatabase sqLiteDatabase=this.getWritableDatabase();
-        sqLiteDatabase.insert(TABLE_ACCOUNTS,null,values);
+        sqLiteDatabase.insertWithOnConflict(TABLE_ACCOUNTS,null,values,SQLiteDatabase.CONFLICT_REPLACE);
         sqLiteDatabase.close();
     }
     //same for item
-    public void addItem(Item it){
+    public boolean addItem(Item it){
         if(findItem(it.getName())==null) {
             ContentValues values = new ContentValues();
             values.put(COLUMN_NAME, it.getName());
-            values.put(COLUMN_COST, it.getCost());
             SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
             sqLiteDatabase.insert(TABLE_ITEMS, null, values);
             sqLiteDatabase.close();
+            return true;
         }
+        return false;
     }
     public void addItemToAccount(String username,Item item,int amount){
         ContentValues values=new ContentValues();
         values.put(COLUMN_USERNAME,username);
         values.put(COLUMN_NAME,item.getName());
-        values.put(COLUMN_AMOUNT,amount);
         SQLiteDatabase sqLiteDatabase=this.getWritableDatabase();
+        String previousAmount=findPreviousAmount(username,item.getName());
+        if(previousAmount!=null) {
+            values.put(COLUMN_AMOUNT,Integer.toString(amount+Integer.parseInt(previousAmount)));
+            sqLiteDatabase.update(TABLE_ACCOUNT_HAS_ITEMS,values,COLUMN_USERNAME+"=? AND "+COLUMN_NAME+"=?",new String[]{username,item.getName()});
+        }else{
+            values.put(COLUMN_AMOUNT,Integer.toString(amount));
+            sqLiteDatabase.insert(TABLE_ACCOUNT_HAS_ITEMS,null,values);
+        }
         sqLiteDatabase.close();
+
     }
+
+
+    public String findPreviousAmount(String username,String itemname){
+        SQLiteDatabase sqLiteDatabase=this.getReadableDatabase();
+        Cursor cursor=sqLiteDatabase.rawQuery("SELECT "+COLUMN_AMOUNT+" FROM "+TABLE_ACCOUNT_HAS_ITEMS+" WHERE "+COLUMN_USERNAME+"=? AND "+COLUMN_NAME+"=?",new String[]{username,itemname});
+        if(cursor.moveToFirst()){
+            return cursor.getString(0);
+        }
+        return null;
+    }
+
+
+
+
     //find Account based on username users helper function
     public Account findAccount(String username){
         String query="SELECT * FROM "+TABLE_ACCOUNTS+" WHERE "+COLUMN_USERNAME+" = '"+username+"'";
@@ -103,28 +127,73 @@ public class MyDBHandler extends SQLiteOpenHelper {
         return queryItemDB(query);
     }
 
-    /*
-    TODO grab user Items using username and return the arraylist, gets called from My items fragment (gallery fragment)
-    public ArrayList<Item> findUserItems(String username){
-        String query="SELECT * FROM "+TABLE_ITEMS+" WHERE "+COLUMN_USERNAME+" = "+username;
-        ArrayList<Item> userItems=new ArrayList<>();
+    public ArrayList<Item> findAllItems(){
+        String query="SELECT * FROM "+TABLE_ITEMS;
+        ArrayList<Item> allItems=new ArrayList<>();
         SQLiteDatabase sqLiteDatabase=this.getWritableDatabase();
         Cursor cursor=sqLiteDatabase.rawQuery(query,null);
         if(cursor.moveToFirst()){
             do{
                 Item item=new Item();
                 item.setName(cursor.getString(0));
-                item.setAmount(cursor.getInt(1));
-                item.setUsername(cursor.getString(2));
+                allItems.add(item);
+            }while(cursor.moveToNext());
+            cursor.close();
+        }
+        sqLiteDatabase.close();
+        return allItems;
+
+    }
+
+
+    // grab user Items using username and return the arraylist, gets called from My items fragment (gallery fragment)
+    public ArrayList<Item> findUserItems(String username){
+        String query="SELECT * FROM "+TABLE_ACCOUNT_HAS_ITEMS+" WHERE "+COLUMN_USERNAME+" = '"+username+"'";
+
+        ArrayList<Item> userItems=new ArrayList<>();
+        SQLiteDatabase sqLiteDatabase=this.getWritableDatabase();
+        Cursor cursor=sqLiteDatabase.rawQuery(query,null);
+        if(cursor.moveToFirst()){
+            do{
+                Item item=new Item();
+                item.setName(cursor.getString(1));
                 userItems.add(item);
             }while(cursor.moveToNext());
             cursor.close();
         }
         sqLiteDatabase.close();
+
         return userItems;
     }
 
-     */
+
+    //grab user items and amounts
+    // grab user Items using username and return the arraylist, gets called from My items fragment (gallery fragment)
+    public ArrayList<Item> findUserData(String username){
+
+
+        String query="SELECT * FROM "+TABLE_ACCOUNT_HAS_ITEMS+" WHERE "+COLUMN_USERNAME+" = '"+username+"'";
+
+        ArrayList<Item> userItems=new ArrayList<>();
+        SQLiteDatabase sqLiteDatabase=this.getWritableDatabase();
+        Cursor cursor=sqLiteDatabase.rawQuery(query,null);
+        if(cursor.moveToFirst()){
+            do{
+                Item item=new Item();
+                item.setName(cursor.getString(1));
+                userItems.add(item);
+            }while(cursor.moveToNext());
+            cursor.close();
+        }
+        sqLiteDatabase.close();
+
+        return userItems;
+    }
+
+
+
+
+
 
 
     //Helper function for finding items
@@ -152,7 +221,6 @@ public class MyDBHandler extends SQLiteOpenHelper {
         if(cursor.moveToFirst()){
             cursor.moveToFirst();
             item.setName(cursor.getString(0));
-            item.setCost(cursor.getDouble(1));
             cursor.close();
         }else{
             item=null;
@@ -160,17 +228,20 @@ public class MyDBHandler extends SQLiteOpenHelper {
         sqLiteDatabase.close();
         return item;
     }
-    //deletes currently user doesnt have that ability
-    public boolean deleteAccount(String username){
-        boolean result=false;
-        Account account=findAccount(username);
-        if (account != null) {
-            SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-            result=sqLiteDatabase.delete(TABLE_ACCOUNTS, COLUMN_USERNAME + " =?",new String[]{username})>0;
-            sqLiteDatabase.close();
-        }
-        return result;
-    }
+    //deletes row and inserts new row with new amount
+//    public boolean updateRow(String username,String itemName,int amount){
+//        boolean result=false;
+//        String query="SELECT * FROM "+TABLE_ACCOUNT_HAS_ITEMS+" WHERE "+COLUMN_USERNAME+" AND "+COLUMN_AMOUNT+" = '"+username+"'";
+//        if (account != null) {
+//            SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+//            result=sqLiteDatabase.delete(TABLE_ACCOUNTS, COLUMN_USERNAME + " =?",new String[]{username})>0;
+//            sqLiteDatabase.close();
+//        }
+//        return result;
+//    }
+
+
+
 
 
 }

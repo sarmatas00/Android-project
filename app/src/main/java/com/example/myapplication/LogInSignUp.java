@@ -15,6 +15,7 @@ import android.widget.Toast;
 public class LogInSignUp extends AppCompatActivity {
     private Button logInBtn,signUpBtn;
     private EditText username,password,email;
+    private MyDBHandler db;
 
     //finds views which are the username/pass editTexts
     @Override
@@ -26,6 +27,9 @@ public class LogInSignUp extends AppCompatActivity {
         username= findViewById(R.id.editTextUsername);
         password= findViewById(R.id.editTextPassword);
         Bundle extras=getIntent().getExtras();
+        db=new MyDBHandler(this,null,null,1);
+        //add demo accounts when db is created
+        insertDemoAccounts();
         if(extras!=null){
             username.setText(extras.getCharSequence("newName"));
         }
@@ -46,7 +50,7 @@ public class LogInSignUp extends AppCompatActivity {
         System.out.println("loginclicked");
 
         //Looking in database for username with account and checking if pass is matching given one
-        MyDBHandler db=new MyDBHandler(this,null,null,1);
+
         Account acc=db.findAccount(username.getText().toString());
         if(acc==null) {
             Toast.makeText(getApplicationContext(), "There isn't an account with this username", Toast.LENGTH_SHORT).show();
@@ -69,5 +73,14 @@ public class LogInSignUp extends AppCompatActivity {
         System.out.println("signupclicked");
         Intent i=new Intent(this,CreateAccount.class);
         startActivity(i);
+    }
+
+    //Inserts demo accounts into database
+    public void insertDemoAccounts() {
+        Account account = new Account();
+        account.setUsername("admin");
+        account.setEmail("admin@admin.com");
+        account.setPassword("12345");
+        db.addAccount(account);
     }
 }
