@@ -7,6 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 //This class handles the SQL database here we create the tables and create methods for them
 public class MyDBHandler extends SQLiteOpenHelper {
     //all table names and column names must be listed here
@@ -169,30 +172,27 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
     //grab user items and amounts
     // grab user Items using username and return the arraylist, gets called from My items fragment (gallery fragment)
-    public ArrayList<Item> findUserData(String username){
+    public Map<String, String> findUserData(String username){
 
 
         String query="SELECT * FROM "+TABLE_ACCOUNT_HAS_ITEMS+" WHERE "+COLUMN_USERNAME+" = '"+username+"'";
 
-        ArrayList<Item> userItems=new ArrayList<>();
+
+        Map<String,String> userData=new HashMap<>();
         SQLiteDatabase sqLiteDatabase=this.getWritableDatabase();
         Cursor cursor=sqLiteDatabase.rawQuery(query,null);
         if(cursor.moveToFirst()){
             do{
-                Item item=new Item();
-                item.setName(cursor.getString(1));
-                userItems.add(item);
+
+                userData.put(cursor.getString(1),cursor.getString(2));
+
             }while(cursor.moveToNext());
             cursor.close();
         }
         sqLiteDatabase.close();
 
-        return userItems;
+        return userData;
     }
-
-
-
-
 
 
 

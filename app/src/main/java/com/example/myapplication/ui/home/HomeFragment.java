@@ -1,19 +1,25 @@
 package com.example.myapplication.ui.home;
 
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.myapplication.HomeViewModel;
+import com.example.myapplication.MyDBHandler;
 import com.example.myapplication.R;
 import com.example.myapplication.databinding.FragmentHomeBinding;
 
@@ -23,33 +29,51 @@ import org.eazegraph.lib.models.PieModel;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
     private  PieChart pieChart;
-    private  TextView stat1,stat2,stat3,stat4;
-    private View view1,view2,view3,view4;
     private String username;
+    private MyDBHandler db;
+    private Map<String,String> map;
 
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+        db= new MyDBHandler(getActivity(), null, null, 1);
+        map=new HashMap<>();
 
 
 
-            // This callback will only be called when MyFragment is at least Started.
+
+
+        // This callback will only be called when MyFragment is at least Started.
         //This de-activates back button when user is in home page
             OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
                 @Override
@@ -64,24 +88,45 @@ public class HomeFragment extends Fragment {
         return root;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setData(view);
 
-       //get connected user's username from activity
+        pieChart = view.findViewById(R.id.piechart);
+
+
+
+
+        //get connected user's username from activity
         if(getActivity()!=null) {
             HomeViewModel homeViewModel =
                     new ViewModelProvider(getActivity()).get(HomeViewModel.class);
 
             homeViewModel.getText().observe(getViewLifecycleOwner(), s -> {
-                username=s;
+                this.username=s;
+
+                map=db.findUserData(username);
+
+
+                //sort hashmap by value
+                Map<String,String> sortedMap=map.entrySet().stream()
+                        .sorted((k1, k2) -> Float.compare(Float.valueOf(k1.getValue()),Float.valueOf(k2.getValue()))).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+                                (k1, k2) -> k1, LinkedHashMap::new));
+
+
+
+                setupPieChart();
+                loadPieChartData(sortedMap);
+
+
             });
+
         }
 
-        pieChart = view.findViewById(R.id.piechart);
-        setupPieChart();
-        loadPieChartData();
+
+
+
 
     }
 
@@ -91,54 +136,7 @@ public class HomeFragment extends Fragment {
         binding = null;
     }
 
-    //here the data displayed in home page are made
-    public  void setData(View view)
-    {
-        System.out.println("called");
-        /*
-        pieChart=view.findViewById(R.id.piechart);
-        // Set the percentage of language used
 
-
-        // Set the data and color to the pie chart
-        pieChart.addPieSlice(
-                new PieModel(
-                        "stat1",
-                        40,
-                        Color.parseColor("#FFA726")));
-        pieChart.addPieSlice(
-                new PieModel(
-                        "stat2",
-                        30,
-                        Color.parseColor("#66BB6A")));
-        pieChart.addPieSlice(
-                new PieModel(
-                        "stat3",
-                        40,
-                        Color.parseColor("#EF5350")));
-        pieChart.addPieSlice(
-                new PieModel(
-                        "stat4",
-                        20,
-                        Color.parseColor("#29B6F6")));
-
-        // To animate the pie chart
-        pieChart.startAnimation();
-        */
-
-
-        /*
-        stat1=getView().findViewById(R.id.stat1);
-        stat2=getView().findViewById(R.id.stat2);
-        stat3=getView().findViewById(R.id.stat3);
-        stat4=getView().findViewById(R.id.stat4);
-        stat1.setText("DICKS");
-        stat2.setText("BALLS");
-        stat3.setText("URMOM");
-        stat4.setText("ISGAY");
-
-         */
-    }
 
 
     private void setupPieChart() {
@@ -149,23 +147,98 @@ public class HomeFragment extends Fragment {
         pieChart.setCenterText("Spending by Category");
         pieChart.setCenterTextSize(24);
         pieChart.getDescription().setEnabled(false);
-
+/*
         Legend l = pieChart.getLegend();
-        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
         l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
         l.setOrientation(Legend.LegendOrientation.VERTICAL);
         l.setTextSize(15);
         l.setDrawInside(false);
         l.setEnabled(true);
+        */
     }
 
-    private void loadPieChartData() {
-        ArrayList<PieEntry> entries = new ArrayList<>();
-        entries.add(new PieEntry(0.2f, "Food & Dining"));
-        entries.add(new PieEntry(0.15f, "Medical"));
-        entries.add(new PieEntry(0.10f, "Entertainment"));
-        entries.add(new PieEntry(0.25f, "Electricity and Gas"));
-        entries.add(new PieEntry(0.3f, "Housing"));
+    private float getPercentage(float value,float total){
+        BigDecimal number= new BigDecimal(Float.toString(value/total));
+        return number.floatValue();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void loadPieChartData(Map<String,String> sortedMap) {
+
+        ArrayList<PieEntry> pieEntries = new ArrayList<>();
+
+        Set<String> setKeys= sortedMap.keySet();
+        List<String> keys=new ArrayList<String>(setKeys);
+
+        ListIterator<String> it=keys.listIterator(keys.size());
+
+
+
+
+
+
+        float total=0;
+        if(map.size()<=5){
+            while(it.hasPrevious()){
+                total+=Float.parseFloat((String) map.get(it.previous()));
+            }
+        }else{
+            int i=0;
+            while(it.hasPrevious()){
+                if(i>=5){
+                    break;
+                }
+                float currValue=Float.parseFloat((String) map.get(it.previous()));
+                total+=currValue;
+                i++;
+                if(currValue==0){
+                    break;
+                }
+            }
+        }
+
+        it=keys.listIterator(keys.size());
+        int i=0;
+        ConstraintLayout layout=(ConstraintLayout) (getView()).findViewById(R.id.dataSet);
+
+        int previous=(getView()).findViewById(R.id.homeDataContainer).getId();
+        while (it.hasPrevious()){
+            String item=  it.previous();
+            float currValue=Float.parseFloat(map.get(item));
+            if(currValue==0){
+                break;
+            }
+            if(i<5){
+                pieEntries.add(new PieEntry(getPercentage(currValue,total), item));
+                i++;
+            }
+                TextView stat=(new TextView(getActivity()));
+                ConstraintLayout.LayoutParams params=new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
+                int topToBottom=previous;
+                params.leftToLeft=layout.getId();
+                params.topToBottom=topToBottom;
+
+                params.rightToRight=layout.getId();
+
+                previous=View.generateViewId();
+                stat.setId(previous);
+                stat.setLayoutParams(params);
+                stat.setText(item+" : "+currValue);
+                stat.setTextSize(12);
+                stat.setTextColor(Color.BLACK);
+                stat.setBackgroundColor(0xff66ff66);
+                layout.addView(stat);
+
+
+
+        }
+
+
+
+
+
+
 
         ArrayList<Integer> colors = new ArrayList<>();
         for (int color: ColorTemplate.MATERIAL_COLORS) {
@@ -176,7 +249,8 @@ public class HomeFragment extends Fragment {
             colors.add(color);
         }
 
-        PieDataSet dataSet = new PieDataSet(entries, "Expense item");
+        System.out.println(pieEntries.size());
+        PieDataSet dataSet = new PieDataSet(pieEntries,"Expenses");
         dataSet.setColors(colors);
 
 
@@ -191,5 +265,8 @@ public class HomeFragment extends Fragment {
 
         pieChart.animateY(1400, Easing.EaseInOutQuad);
     }
+
+
+
 
 }
