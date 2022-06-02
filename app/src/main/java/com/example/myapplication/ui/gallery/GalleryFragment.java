@@ -1,15 +1,20 @@
 package com.example.myapplication.ui.gallery;
 
+import com.example.myapplication.EnchancedItem;
 import com.example.myapplication.HomeViewModel;
 import com.example.myapplication.ItemAdapter;
 import com.example.myapplication.Main2Activity;
 import com.example.myapplication.MyDBHandler;
 import com.example.myapplication.R;
+
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,7 +36,7 @@ import java.util.ArrayList;
 public class GalleryFragment extends Fragment {
 
     private FragmentGalleryBinding binding;
-    private static ArrayList<Item> itemList;
+    private static ArrayList<EnchancedItem> itemList;
     private RecyclerView recyclerView;
     private MyDBHandler db;
     private String username;
@@ -66,11 +71,12 @@ public class GalleryFragment extends Fragment {
             galleryViewModel.getText().observe(getViewLifecycleOwner(), s -> {
                 username=s;
                 itemList=new ArrayList<>();
-                itemList=db.findUserItems(s);
+                itemList=db.findUserData(username);
+                for(EnchancedItem x:itemList){
+                    System.out.println(x.getName());
+                }
 
-                //find all items from db
-                itemList=new ArrayList<>();
-                itemList=db.findAllItems();
+
                 //pass recycler to setAdapter, which creates the recycler view with the itemList arrayList
                 setAdapter(rec);
             });
@@ -91,6 +97,7 @@ public class GalleryFragment extends Fragment {
 
 
 
+    //TODO TRY REFRESH ON DELETE
     //Standard code for Recycler creation
     private void setAdapter(RecyclerView recyclerView){
         ItemAdapter adapter=new ItemAdapter(itemList,username);

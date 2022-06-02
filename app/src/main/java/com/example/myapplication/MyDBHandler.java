@@ -169,19 +169,19 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
     //grab user items and amounts
     // grab user Items using username and return the arraylist, gets called from My items fragment (gallery fragment)
-    public ArrayList<Item> findUserData(String username){
+    public ArrayList<EnchancedItem> findUserData(String username){
 
 
         String query="SELECT * FROM "+TABLE_ACCOUNT_HAS_ITEMS+" WHERE "+COLUMN_USERNAME+" = '"+username+"'";
 
-        ArrayList<Item> userItems=new ArrayList<>();
+        ArrayList<EnchancedItem> userItems=new ArrayList<>();
         SQLiteDatabase sqLiteDatabase=this.getWritableDatabase();
         Cursor cursor=sqLiteDatabase.rawQuery(query,null);
         if(cursor.moveToFirst()){
+            Double value=null;
             do{
-                Item item=new Item();
-                item.setName(cursor.getString(1));
-                userItems.add(item);
+                value=Double.parseDouble(cursor.getString(2));
+                userItems.add(new EnchancedItem(cursor.getString(1),value));
             }while(cursor.moveToNext());
             cursor.close();
         }
@@ -189,6 +189,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
         return userItems;
     }
+
 
 
 
@@ -239,6 +240,16 @@ public class MyDBHandler extends SQLiteOpenHelper {
 //        }
 //        return result;
 //    }
+    public boolean deleteItemFromUser(String username,String itemName){
+        SQLiteDatabase db=this.getWritableDatabase();
+        System.out.println("WHERE "+COLUMN_USERNAME+"= '"+username+"' AND "+COLUMN_NAME+"= '"+itemName+"'");
+        return db.delete(TABLE_ACCOUNT_HAS_ITEMS,COLUMN_USERNAME+"= '"+username+"' AND "+COLUMN_NAME+"= '"+itemName+"'",null)>0;
+        //return false;
+    }
+
+    public double findTotalSpentOnItem(String username,String itemName){
+        return 0;
+    }
 
 
 
