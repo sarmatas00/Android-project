@@ -3,6 +3,7 @@ package com.example.myapplication;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ActionBar;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.myapplication.databinding.ActivityAddItemBinding;
+import com.example.myapplication.ui.gallery.GalleryFragment;
 
 public class AddItem extends AppCompatActivity {
     private EditText amount;
@@ -47,8 +49,15 @@ public class AddItem extends AppCompatActivity {
                 MyDBHandler dbHandler = new MyDBHandler(view.getContext(), null, null, 1);
                 if(username!=null) {
                     dbHandler.addItemToAccount(username,new Item(value),Integer.parseInt(amountValue));
+                    System.out.println("added"+value+amountValue);
                 }
                 finish();
+                Intent i=new Intent(view.getContext(),Main2Activity.class);
+                i.putExtra("userName",username);
+                startActivity(i);
+
+
+
             }
         });
         back = (Button) findViewById(R.id.backBtn);

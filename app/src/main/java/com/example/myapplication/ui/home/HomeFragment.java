@@ -106,7 +106,7 @@ public class HomeFragment extends Fragment {
             homeViewModel.getText().observe(getViewLifecycleOwner(), s -> {
                 this.username=s;
 
-                map=db.findUserData(username);
+                map=db.findUserDataForChart(username);
 
 
                 //sort hashmap by value
