@@ -33,17 +33,7 @@ public class AddItem extends AppCompatActivity {
 
         amount = (EditText) findViewById(R.id.enterAmount);
         //add euro sign when user focus on the amount field
-        amount.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    amount.setText("$");
-                    amount.setSelection(1);
-                } else {
-                    amount.setText("");
-                }
-            }
-        });
+        amount.setOnFocusChangeListener(onFocusListener);
         itemName = (TextView) findViewById(R.id.itemName);
         value=username=null;
         if(savedInstanceState==null) {
@@ -58,36 +48,54 @@ public class AddItem extends AppCompatActivity {
         }
 
         add = (Button) findViewById(R.id.confirmAmountBtn);
-        add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String amountValue =(amount.getText().toString().contains("$"))?amount.getText().toString().substring(1) : amount.getText().toString();
+        add.setOnClickListener(onAddListener);
+        back = (Button) findViewById(R.id.backBtn);
+        back.setOnClickListener(onBackListener);
 
-                if(amountValue.equals("")){
-                    amountValue="0";
-                }
-                MyDBHandler dbHandler = new MyDBHandler(view.getContext(), null, null, 1);
-                if(username!=null) {
-                    dbHandler.addItemToAccount(username,new Item(value),Integer.parseInt(amountValue),getDate());
-                }
-                finish();
+    }
+
+    private View.OnFocusChangeListener onFocusListener=new View.OnFocusChangeListener() {
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            if (hasFocus) {
+                amount.setText("$");
+                amount.setSelection(1);
+            } else {
+
+                amount.setText("");
+            }
+        }
+    };
+
+    private View.OnClickListener onAddListener=new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            System.out.println(amount.getText().toString());
+            String amountValue =(amount.getText().toString().contains("$"))?amount.getText().toString().substring(1) : amount.getText().toString();
+
+            if(amountValue.equals("")){
+                amountValue="0";
+            }
+            MyDBHandler dbHandler = new MyDBHandler(view.getContext(), null, null, 1);
+            if(username!=null) {
+                dbHandler.addItemToAccount(username,new Item(value),Integer.parseInt(amountValue),getDate());
+            }
+            finish();
 //                Intent i=new Intent(view.getContext(),Main2Activity.class);
 //                i.putExtra("userName",username);
 //                startActivity(i);
 
 
 
-            }
-        });
-        back = (Button) findViewById(R.id.backBtn);
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        }
+    };
 
-    }
+    private View.OnClickListener onBackListener=new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            finish();
+        }
+    };
 
 
 
