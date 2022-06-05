@@ -1,15 +1,13 @@
 package com.example.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-//Create account activity when sign-up in LogInSignUp activity is clicked works fine
+//Create account activity when sign-up in LogInSignUp activity is clicked
 public class CreateAccount extends AppCompatActivity {
     //ac contains username,email,password 3 strings
     private EditText userIn,emailIn,passIn;

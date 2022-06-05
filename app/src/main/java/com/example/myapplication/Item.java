@@ -1,7 +1,6 @@
 package com.example.myapplication;
 
-//Item class has a name which is unique used as primary key for db
-//and cost more attributes can be added but DB MUST BE CHANGED
+//Item class has a name which is unique
 
 public class Item {
     private String name;

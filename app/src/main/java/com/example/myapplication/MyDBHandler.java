@@ -5,13 +5,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+
+
 
 //This class handles the SQL database here we create the tables and create methods for them
 public class MyDBHandler extends SQLiteOpenHelper {
@@ -48,7 +49,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
                 COLUMN_NAME+" TEXT PRIMARY KEY" + ")";
 
 
-        //ACCOUNT_HAS_ITEMS(USERNAME,NAME,AMOUNT) NAME IS ITEMNAME USERNAME+NAME PRIMARY KEY
+        //ACCOUNT_HAS_ITEMS(USERNAME,NAME,AMOUNT) NAME IS ITEMNAME+USERNAME+DATE AS COMPOSITE PRIMARY KEY
 
         String CREATE_ACCOUNT_HAS_ITEMS_TABLE="CREATE TABLE IF NOT EXISTS "+
                 TABLE_ACCOUNT_HAS_ITEMS+"("+
@@ -57,6 +58,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
                 COLUMN_AMOUNT+" TEXT,"+
                 COLUMN_IMEROMINIA+" TEXT, PRIMARY KEY ("+COLUMN_USERNAME+", "+COLUMN_NAME+", "+COLUMN_IMEROMINIA+"))";
 
+        //execute the queries
         sqLiteDatabase.execSQL(CREATE_ACCOUNTS_TABLE);
         sqLiteDatabase.execSQL(CREATE_ITEMS_TABLE);
         sqLiteDatabase.execSQL(CREATE_ACCOUNT_HAS_ITEMS_TABLE);
@@ -85,7 +87,9 @@ public class MyDBHandler extends SQLiteOpenHelper {
         sqLiteDatabase.insertWithOnConflict(TABLE_ACCOUNTS,null,values,SQLiteDatabase.CONFLICT_REPLACE);
         sqLiteDatabase.close();
     }
-    //same for item
+
+
+    //same for item but first we check if the item exists in the database already
     public boolean addItem(Item it){
         if(findItem(it.getName())==null) {
             ContentValues values = new ContentValues();
@@ -97,6 +101,8 @@ public class MyDBHandler extends SQLiteOpenHelper {
         }
         return false;
     }
+
+    //add an item with its amount linked to a specific account and date as a log
     public void addItemToAccount(String username,Item item,int amount,String date){
         ContentValues values=new ContentValues();
         values.put(COLUMN_USERNAME,username);
@@ -104,29 +110,10 @@ public class MyDBHandler extends SQLiteOpenHelper {
         values.put(COLUMN_IMEROMINIA,date);
         values.put(COLUMN_AMOUNT,amount);
         SQLiteDatabase sqLiteDatabase=this.getWritableDatabase();
-//        String previousAmount=findPreviousAmount(username,item.getName());
-//        if(previousAmount!=null) {
-//            values.put(COLUMN_AMOUNT,Integer.toString(amount+Integer.parseInt(previousAmount)));
-//            sqLiteDatabase.update(TABLE_ACCOUNT_HAS_ITEMS,values,COLUMN_USERNAME+"=? AND "+COLUMN_NAME+"=?",new String[]{username,item.getName()});
-//        }else{
-//            values.put(COLUMN_AMOUNT,Integer.toString(amount));
-            sqLiteDatabase.insert(TABLE_ACCOUNT_HAS_ITEMS,null,values);
-//        }
-
+        sqLiteDatabase.insert(TABLE_ACCOUNT_HAS_ITEMS,null,values);
         sqLiteDatabase.close();
 
     }
-
-
-    public String findPreviousAmount(String username,String itemname){
-        SQLiteDatabase sqLiteDatabase=this.getReadableDatabase();
-        Cursor cursor=sqLiteDatabase.rawQuery("SELECT "+COLUMN_AMOUNT+" FROM "+TABLE_ACCOUNT_HAS_ITEMS+" WHERE "+COLUMN_USERNAME+"=? AND "+COLUMN_NAME+"=?",new String[]{username,itemname});
-        if(cursor.moveToFirst()){
-            return cursor.getString(0);
-        }
-        return null;
-    }
-
 
 
 
@@ -141,12 +128,12 @@ public class MyDBHandler extends SQLiteOpenHelper {
         return queryItemDB(query);
     }
 
+
+    //find all items in the database
     public ArrayList<Item> findAllItems(){
         String query="SELECT * FROM "+TABLE_ITEMS;
         ArrayList<Item> allItems=new ArrayList<>();
         SQLiteDatabase sqLiteDatabase=this.getWritableDatabase();
-
-
 
         Cursor cursor=sqLiteDatabase.rawQuery(query,null);
         if(cursor.moveToFirst()){
@@ -163,29 +150,12 @@ public class MyDBHandler extends SQLiteOpenHelper {
     }
 
 
-    // grab user Items using username and return the arraylist, gets called from My items fragment (gallery fragment)
-    public ArrayList<Item> findUserItems(String username){
-        String query="SELECT * FROM "+TABLE_ACCOUNT_HAS_ITEMS+" WHERE "+COLUMN_USERNAME+" = '"+username+"'";
-
-        ArrayList<Item> userItems=new ArrayList<>();
-        SQLiteDatabase sqLiteDatabase=this.getWritableDatabase();
-        Cursor cursor=sqLiteDatabase.rawQuery(query,null);
-        if(cursor.moveToFirst()){
-            do{
-                Item item=new Item();
-                item.setName(cursor.getString(1));
-                userItems.add(item);
-            }while(cursor.moveToNext());
-            cursor.close();
-        }
-        sqLiteDatabase.close();
-
-        return userItems;
-    }
 
 
-    //grab user items and amounts
-    // grab user Items using username and return the arraylist, gets called from My items fragment (gallery fragment)
+
+    //grab user items  using username and return the arraylist
+    //every item might be present many times in that table, so we first check if it has already been added and if not
+    //we add up all the amounts corresponding to that item and add it to the arraylist
     public ArrayList<EnchancedItem> findUserData(String username){
 
 
@@ -215,6 +185,8 @@ public class MyDBHandler extends SQLiteOpenHelper {
         return userItems;
     }
 
+    //about the same as previous, but here we also filter the date an item was added on
+    //depending on user option in home fragment. Instead of arraylist, we use a hashmap to store amounts together with the names
     public Map<String, String> findUserDataForChart(String username,String usecase){
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
         String currentDate=dateFormat.format(new Date());
@@ -237,7 +209,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
         Map<String,String> userData=new HashMap<>();
         SQLiteDatabase sqLiteDatabase=this.getWritableDatabase();
         Cursor cursor=sqLiteDatabase.rawQuery(query,null);
-        System.out.println("CURSOOOOOOR"+cursor.getCount());
+
 
         if(cursor.moveToFirst()){
             boolean exists=false;
@@ -292,23 +264,16 @@ public class MyDBHandler extends SQLiteOpenHelper {
         sqLiteDatabase.close();
         return item;
     }
-    //deletes row and inserts new row with new amount
-//    public boolean updateRow(String username,String itemName,int amount){
-//        boolean result=false;
-//        String query="SELECT * FROM "+TABLE_ACCOUNT_HAS_ITEMS+" WHERE "+COLUMN_USERNAME+" AND "+COLUMN_AMOUNT+" = '"+username+"'";
-//        if (account != null) {
-//            SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-//            result=sqLiteDatabase.delete(TABLE_ACCOUNTS, COLUMN_USERNAME + " =?",new String[]{username})>0;
-//            sqLiteDatabase.close();
-//        }
-//        return result;
-//    }
+
+
+    //deletes all logs of this item for a particular user
     public boolean deleteItemFromUser(String username,String itemName){
         SQLiteDatabase db=this.getWritableDatabase();
         return db.delete(TABLE_ACCOUNT_HAS_ITEMS,COLUMN_USERNAME+"= '"+username+"' AND "+COLUMN_NAME+"= '"+itemName+"'",null)>0;
-        //return false;
+
     }
 
+    //helper function for calculating total value of different amount logs
     public double getTotalValue(Cursor cursor,String itemName){
         double totalValue=0;
         if(cursor.moveToFirst()){

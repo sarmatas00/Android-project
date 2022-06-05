@@ -1,7 +1,6 @@
 package com.example.myapplication;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,7 +12,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.myapplication.ui.gallery.GalleryFragment;
 
 import java.util.ArrayList;
 //ItemAdapter for recycler view in My Items page
@@ -24,7 +22,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.MyViewHolder> 
     public ItemAdapter(ArrayList<EnchancedItem> itemList,String username){
         this.username=username;
         this.itemList=itemList;
-        System.out.println("HHHHHHHHHHHHHHHHH"+username);
+
 
     }
 
@@ -39,7 +37,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.MyViewHolder> 
             btnX=view.findViewById(R.id.imageButton);
             btn.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onClick(View v) {                   //on button click start AddItem activity and pass item name and username
                     Intent intent = new Intent(view.getContext(), AddItem.class);
                     String itemName=itemList.get(getAdapterPosition()).getName();
                     Bundle extras=new Bundle();
@@ -49,28 +47,18 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.MyViewHolder> 
                     view.getContext().startActivity(intent);
                 }
             });
-            btnX.setOnClickListener(new View.OnClickListener() {
+            btnX.setOnClickListener(new View.OnClickListener() {            //on button click delete item from database
                 @Override
                 public void onClick(View view) {
-                    System.out.println(view.getContext());
-                    String itemName=itemList.get(getAdapterPosition()).getName();
-                    System.out.println(view.getContext()+" "+username+" "+itemName);
+                    String itemName=itemList.get(getAdapterPosition()).getName();       //get item name
                     MyDBHandler db=new MyDBHandler(view.getContext(), null,null,1);
                     db.deleteItemFromUser(username,itemName);
                     Activity main= (Activity) view.getContext();
-                    main.onBackPressed();
-                    //GalleryFragment curr=((GalleryFragment) getFragmentManager().findFragmentById(R.id.nav_gallery);
+                    main.onBackPressed();                               //go back to main activity
 
                 }
             });
         }
-        /* TODO display value
-        public double getTotalSpent(String username,String item){
-            MyDBHandler db=new MyDBHandler(,null,null,1);
-            return db.findTotalSpentOnItem(username,item);
-        }
-
-         */
 
     }
 
@@ -84,11 +72,11 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.MyViewHolder> 
 
 
     @Override
-    public void onBindViewHolder(@NonNull ItemAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ItemAdapter.MyViewHolder holder, int position) {      //bind the data to the view
         String name=itemList.get(position).getName();
         Double value=itemList.get(position).getValue();
-        holder.itemTxt.setText(name);
-        holder.totalSpentOnItem.setText(value.toString()+"$");
+        holder.itemTxt.setText(name);                               //set item name to recycler view
+        holder.totalSpentOnItem.setText(value.toString()+"$");      //set total spent on item to view
 
 
 
@@ -99,7 +87,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.MyViewHolder> 
         return itemList.size();
     }
 
-    public void addItem(EnchancedItem item,int position){
+    public void addItem(EnchancedItem item,int position){           //add item to the list and notify the adapter to update the view
         itemList.add(position,item);
         notifyItemInserted(position);
     }

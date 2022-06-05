@@ -2,18 +2,16 @@ package com.example.myapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-//Log out option in navigation drawer menu works
-//TODO make layout not so ugly
+
+//Logout fragment for logging out of the app
 public class LogOut extends Fragment {
 
 
@@ -37,14 +35,14 @@ public class LogOut extends Fragment {
         btnLogOut=view.findViewById(R.id.button4);
         btnGoBack=view.findViewById(R.id.button5);
 
-        btnLogOut.setOnClickListener(new View.OnClickListener() {
+        btnLogOut.setOnClickListener(new View.OnClickListener() {           //on button click start Login/Signup activity
             @Override
             public void onClick(View view) {
                 Intent i=new Intent(getActivity(),LogInSignUp.class);
                 startActivity(i);
             }
         });
-        btnGoBack.setOnClickListener(new View.OnClickListener() {
+        btnGoBack.setOnClickListener(new View.OnClickListener() {           //on Go Back button click return to Main activity
             @Override
             public void onClick(View view) {
                 getActivity().onBackPressed();

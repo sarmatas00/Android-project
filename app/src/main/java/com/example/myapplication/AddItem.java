@@ -2,23 +2,16 @@ package com.example.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.ActionBar;
-import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import com.example.myapplication.databinding.ActivityAddItemBinding;
-import com.example.myapplication.ui.gallery.GalleryFragment;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+//AddItem activity for adding a new amount for a particular item
 public class AddItem extends AppCompatActivity {
     private EditText amount;
     private TextView itemName;
@@ -32,7 +25,6 @@ public class AddItem extends AppCompatActivity {
         setContentView(R.layout.activity_add_item);
 
         amount = (EditText) findViewById(R.id.enterAmount);
-        //add euro sign when user focus on the amount field
         amount.setOnFocusChangeListener(onFocusListener);
         itemName = (TextView) findViewById(R.id.itemName);
         value=username=null;
@@ -44,7 +36,7 @@ public class AddItem extends AppCompatActivity {
             }
         }
         if(value!=null){
-        itemName.setText(value);
+            itemName.setText(value);
         }
 
         add = (Button) findViewById(R.id.confirmAmountBtn);
@@ -57,40 +49,33 @@ public class AddItem extends AppCompatActivity {
     private View.OnFocusChangeListener onFocusListener=new View.OnFocusChangeListener() {
         @Override
         public void onFocusChange(View v, boolean hasFocus) {
-            if (hasFocus) {
+            if (hasFocus) {                     //add dollar sign when user focus on the amount field
                 amount.setText("$");
-                amount.setSelection(1);
-            } else {
-
-                amount.setText("");
+                amount.setSelection(1);         //set cursor to the second position
             }
         }
     };
 
-    private View.OnClickListener onAddListener=new View.OnClickListener() {
+    private View.OnClickListener onAddListener=new View.OnClickListener() {         //add the new amount to the database
         @Override
         public void onClick(View view) {
-            System.out.println(amount.getText().toString());
+
+            //extract dollar value from amount if the user did not remove it by himself already
             String amountValue =(amount.getText().toString().contains("$"))?amount.getText().toString().substring(1) : amount.getText().toString();
 
-            if(amountValue.equals("")){
+            if(amountValue.equals("")){                                //if the amount is empty it means its 0
                 amountValue="0";
             }
             MyDBHandler dbHandler = new MyDBHandler(view.getContext(), null, null, 1);
             if(username!=null) {
                 dbHandler.addItemToAccount(username,new Item(value),Integer.parseInt(amountValue),getDate());
             }
-            finish();
-//                Intent i=new Intent(view.getContext(),Main2Activity.class);
-//                i.putExtra("userName",username);
-//                startActivity(i);
-
-
+            finish();                                       //return to the previous fragment
 
         }
     };
 
-    private View.OnClickListener onBackListener=new View.OnClickListener() {
+    private View.OnClickListener onBackListener=new View.OnClickListener() {        //return to the previous fragment
         @Override
         public void onClick(View view) {
             finish();
@@ -99,7 +84,7 @@ public class AddItem extends AppCompatActivity {
 
 
 
-    private String getDate(){
+    private String getDate(){                       //get the current date
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
         String currentDate=dateFormat.format(new Date());
         SimpleDateFormat timeFormat = new SimpleDateFormat("HHmmss", Locale.getDefault());

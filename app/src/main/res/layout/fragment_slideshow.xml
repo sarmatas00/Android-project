@@ -105,28 +105,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit1" />
 
-<!--    <Button-->
-<!--        android:id="@+id/button6"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginBottom="6dp"-->
-<!--        android:text="@string/search"-->
-<!--        app:layout_constraintBottom_toTopOf="@+id/edit1"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/textView3" />-->
 
-<!--    <EditText-->
-<!--        android:id="@+id/textView3"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="23dp"-->
-<!--        android:hint="@string/search"-->
-<!--        android:minHeight="48dp"-->
-<!--        app:layout_constraintBottom_toTopOf="@+id/button6"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="@+id/hr" />-->
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

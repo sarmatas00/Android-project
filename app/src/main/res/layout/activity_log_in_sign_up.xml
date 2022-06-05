@@ -16,6 +16,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/topConstraint">
 
+        <androidx.constraintlayout.widget.Guideline
+            android:layout_width="wrap_content"
+            android:id="@+id/loginGuideline"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.65"
+            app:layout_constraintTop_toBottomOf="@+id/editTextPassword"
+            app:layout_constraintBottom_toTopOf="@+id/button2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+
+
         <Button
             android:id="@+id/button2"
             android:layout_width="0dp"
@@ -38,7 +51,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/editTextPassword"
             app:layout_constraintStart_toEndOf="@+id/buttonLogIn"
-            app:layout_constraintTop_toBottomOf="@+id/editTextPassword" />
+            app:layout_constraintTop_toBottomOf="@+id/loginGuideline" />
 
         <Button
             android:id="@+id/buttonLogIn"
@@ -57,13 +70,13 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/button2"
             app:layout_constraintStart_toStartOf="@+id/editTextPassword"
-            app:layout_constraintTop_toBottomOf="@+id/editTextPassword"
+            app:layout_constraintTop_toBottomOf="@+id/loginGuideline"
             app:layout_marginBaseline="25dp" />
 
         <EditText
             android:id="@+id/editTextPassword"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_margin="0dp"
             android:layout_marginBottom="100dp"
             android:ems="10"
@@ -71,7 +84,7 @@
             android:inputType="textPersonName|textPassword"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             app:barrierMargin="10dp"
-            app:layout_constraintBottom_toTopOf="@+id/buttonLogIn"
+            app:layout_constraintBottom_toTopOf="@+id/loginGuideline"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editTextUsername" />
@@ -79,7 +92,7 @@
         <EditText
             android:id="@+id/editTextUsername"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Username"
             android:inputType="textPersonName"

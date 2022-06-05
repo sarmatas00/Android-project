@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+//extends item class to include amount for an item
 public class EnchancedItem extends Item{
     private double value;
     public EnchancedItem(){

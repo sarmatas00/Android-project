@@ -1,19 +1,12 @@
 package com.example.myapplication;
 
-import android.graphics.Color;
-import android.widget.TextView;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.myapplication.R;
 
-
-import org.eazegraph.lib.charts.PieChart;
-import org.eazegraph.lib.models.PieModel;
-
-
+//ViewModel class used to store data (username) and share it between fragments
 public class HomeViewModel extends ViewModel {
 
     private final MutableLiveData<String> mText;

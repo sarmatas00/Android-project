@@ -1,17 +1,17 @@
 package com.example.myapplication;
 
-import androidx.activity.OnBackPressedCallback;
-import androidx.appcompat.app.AppCompatActivity;
 
+import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+
 import android.widget.Toast;
-//TODO make landscape layout not trash
-//works fine
+
+
+//LogInSignUp activity for logging in and signing up
 public class LogInSignUp extends AppCompatActivity {
     private Button logInBtn,signUpBtn;
     private EditText username,password,email;
@@ -47,15 +47,13 @@ public class LogInSignUp extends AppCompatActivity {
     //When log in button is clicked
     public void logClicked(View view) {
 
-        System.out.println("loginclicked");
 
         //Looking in database for username with account and checking if pass is matching given one
-
         Account acc=db.findAccount(username.getText().toString());
-        if(acc==null) {
+        if(acc==null) {             //if account doesn't exist
             Toast.makeText(getApplicationContext(), "There isn't an account with this username", Toast.LENGTH_SHORT).show();
             return;
-        }else if(!password.getText().toString().equals(acc.getPassword())) {
+        }else if(!password.getText().toString().equals(acc.getPassword())) {        //if password doesn't match
             Toast.makeText(getApplicationContext(), "Incorrect Password", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -70,12 +68,11 @@ public class LogInSignUp extends AppCompatActivity {
 
     //Sign up button begins CreateAccount activity
     public void signUpClicked(View view) {
-        System.out.println("signupclicked");
         Intent i=new Intent(this,CreateAccount.class);
         startActivity(i);
     }
 
-    //Inserts demo accounts into database
+    //Inserts demo account into the database
     public void insertDemoAccounts() {
         Account account = new Account();
         account.setUsername("admin");

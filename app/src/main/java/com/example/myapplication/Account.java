@@ -1,5 +1,5 @@
 package com.example.myapplication;
-//The Account class used with database if any fields change database table needs update
+//The Account class used with database to store user information
 public class Account {
     private String username,email,password;
     public Account(){
