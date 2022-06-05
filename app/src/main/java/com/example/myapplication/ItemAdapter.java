@@ -82,14 +82,13 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.MyViewHolder> 
         return new MyViewHolder(itemView);
     }
 
-    //We display the data in the elements of a recycler view item
-    //TODO display value
+
     @Override
     public void onBindViewHolder(@NonNull ItemAdapter.MyViewHolder holder, int position) {
         String name=itemList.get(position).getName();
         Double value=itemList.get(position).getValue();
         holder.itemTxt.setText(name);
-        holder.totalSpentOnItem.setText(value.toString());
+        holder.totalSpentOnItem.setText(value.toString()+"$");
 
 
 

@@ -17,7 +17,9 @@ import com.example.myapplication.R;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -28,10 +30,13 @@ import android.widget.Toast;
 
 import com.example.myapplication.ItemAdapter;
 import com.example.myapplication.databinding.FragmentSlideshowBinding;
+import com.example.myapplication.ui.gallery.GalleryFragment;
 
 import org.w3c.dom.Text;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Locale;
 
 //This is the add Item option from navigation menu now its empty
@@ -43,8 +48,9 @@ public class SlideshowFragment extends Fragment {
     private FragmentSlideshowBinding binding;
     private RecyclerView recyclerView;
     private static ArrayList<Item> itemList;
-    private EditText itemName,searchQuery;
-    private Button addItem,searchItem;
+    private EditText itemName;
+    private SearchView searchQuery;
+    private Button addItem;
     private MyDBHandler db;
     private AddItemAdapter adapter;
     private String username;
@@ -68,11 +74,12 @@ public class SlideshowFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         recyclerView=view.findViewById(R.id.recycle);
         itemName=(EditText) view.findViewById(R.id.edit1);
-        searchQuery=(EditText)view.findViewById(R.id.textView3);
+        searchQuery=(SearchView) view.findViewById(R.id.searchView);
+        searchQuery.clearFocus();
+        searchQuery.setOnQueryTextListener(searchListener);
         addItem=(Button) view.findViewById(R.id.buttonNewItem);
         addItem.setOnClickListener(myListener);
-        searchItem=(Button)view.findViewById(R.id.button6);
-        searchItem.setOnClickListener(searchListener);
+
         itemList=new ArrayList<>();
 
 
@@ -114,7 +121,7 @@ public class SlideshowFragment extends Fragment {
                 Item newItem = new Item(newItemName);
                 //get new item name from user and set total amount=0 =>starting amount
                 if (db.addItem(newItem)) {
-                    db.addItemToAccount(username, newItem, 0);
+                    db.addItemToAccount(username, newItem, 0,getDate());
                 }
                 adapter.addItem(newItem, adapter.getItemCount());
                 adapter.notifyItemInserted(adapter.getItemCount());
@@ -132,22 +139,30 @@ public class SlideshowFragment extends Fragment {
             v.getContext().startActivity(intent);
         }
     };
-    private View.OnClickListener searchListener=new View.OnClickListener() {
+    private SearchView.OnQueryTextListener searchListener=new SearchView.OnQueryTextListener(){
+
         @Override
-        public void onClick(View view) {
+        public boolean onQueryTextSubmit(String query) {
+            return false;
+        }
+
+        @Override
+        public boolean onQueryTextChange(String newText) {
             ArrayList<Item>filtered=new ArrayList<>();
-            System.out.println(searchQuery.getText());
-            if(searchQuery.getText().toString().trim().length() != 0){
+
+            if(newText.trim().length() != 0){
                 for(Item x:itemList){
-                    if(x.getName().toLowerCase(Locale.ROOT).contains(searchQuery.getText().toString().toLowerCase(Locale.ROOT)))
+                    if(x.getName().toLowerCase(Locale.ROOT).contains(newText.toLowerCase(Locale.ROOT)))
                         filtered.add(x);
                 }
                 setAdapter(recyclerView,filtered);
             }else{
                 setAdapter(recyclerView,itemList);
             }
+            return true;
         }
     };
+
 
     //Standard code for Recycler creation
     private void setAdapter(RecyclerView recyclerView,ArrayList<Item> list){
@@ -156,5 +171,22 @@ public class SlideshowFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
+    }
+
+    private String getDate(){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
+        String currentDate=dateFormat.format(new Date());
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HHmmss", Locale.getDefault());
+        String currentTime=timeFormat.format(new Date());
+        return "date"+currentDate+"time"+currentTime;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        itemList=db.findAllItems();
+        adapter=new AddItemAdapter(itemList,username);
+        recyclerView.setAdapter(adapter);
+
     }
 }

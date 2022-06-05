@@ -25,6 +25,15 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">My items</string>
     <string name="menu_slideshow">Slideshow</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string-array name="dropdown">
+        <item>Total Expenses</item>
+        <item>Daily Expenses</item>
+        <item>Monthly Expenses</item>
+        <item>Annual Expenses</item>
+    </string-array>
+
+
+
+
 </resources>

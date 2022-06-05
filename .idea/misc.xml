@@ -39,21 +39,27 @@
         <entry key="..\:/Users/nikoa/AndroidStudioProjects/oops/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1775" />
         <entry key="..\:/Users/nikoa/AndroidStudioProjects/oops/app/src/main/res/drawable/ic_menu_slideshow.xml" value="0.3675" />
         <entry key="..\:/Users/nikoa/AndroidStudioProjects/oops/app/src/main/res/drawable/roundcorner.xml" value="0.1" />
+        <entry key="..\:/Users/nikoa/AndroidStudioProjects/oops/app/src/main/res/drawable/search_view.xml" value="0.2035" />
         <entry key="..\:/Users/nikoa/AndroidStudioProjects/oops/app/src/main/res/drawable/side_nav_bar.xml" value="0.3675" />
         <entry key="..\:/Users/nikoa/AndroidStudioProjects/oops/app/src/main/res/drawable/signup_background.xml" value="0.1775" />
+        <entry key="..\:/Users/nikoa/AndroidStudioProjects/oops/app/src/main/res/drawable/spinner.xml" value="0.189" />
+        <entry key="..\:/Users/nikoa/AndroidStudioProjects/oops/app/src/main/res/drawable/spinner_arrow.xml" value="0.1" />
+        <entry key="..\:/Users/nikoa/AndroidStudioProjects/oops/app/src/main/res/drawable/spinner_dropdown.xml" value="0.203" />
         <entry key="..\:/Users/nikoa/AndroidStudioProjects/oops/app/src/main/res/layout-land/activity_create_account.xml" value="0.39947916666666666" />
         <entry key="..\:/Users/nikoa/AndroidStudioProjects/oops/app/src/main/res/layout-land/activity_log_in_sign_up.xml" value="0.6342342342342342" />
-        <entry key="..\:/Users/nikoa/AndroidStudioProjects/oops/app/src/main/res/layout-land/fragment_slideshow.xml" value="0.1" />
+        <entry key="..\:/Users/nikoa/AndroidStudioProjects/oops/app/src/main/res/layout-land/fragment_slideshow.xml" value="0.25" />
         <entry key="..\:/Users/nikoa/AndroidStudioProjects/oops/app/src/main/res/layout/activity_add_item.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/nikoa/AndroidStudioProjects/oops/app/src/main/res/layout/activity_create_account.xml" value="0.3625" />
         <entry key="..\:/Users/nikoa/AndroidStudioProjects/oops/app/src/main/res/layout/activity_log_in_sign_up.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/nikoa/AndroidStudioProjects/oops/app/src/main/res/layout/activity_main2.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/nikoa/AndroidStudioProjects/oops/app/src/main/res/layout/app_bar_main2.xml" value="0.1" />
+        <entry key="..\:/Users/nikoa/AndroidStudioProjects/oops/app/src/main/res/layout/app_bar_item.xml" value="0.365625" />
+        <entry key="..\:/Users/nikoa/AndroidStudioProjects/oops/app/src/main/res/layout/app_bar_main2.xml" value="0.25" />
         <entry key="..\:/Users/nikoa/AndroidStudioProjects/oops/app/src/main/res/layout/content_main2.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/nikoa/AndroidStudioProjects/oops/app/src/main/res/layout/fragment_gallery.xml" value="0.1" />
-        <entry key="..\:/Users/nikoa/AndroidStudioProjects/oops/app/src/main/res/layout/fragment_home.xml" value="0.5" />
+        <entry key="..\:/Users/nikoa/AndroidStudioProjects/oops/app/src/main/res/layout/fragment_gallery.xml" value="0.22" />
+        <entry key="..\:/Users/nikoa/AndroidStudioProjects/oops/app/src/main/res/layout/fragment_home.xml" value="0.33" />
         <entry key="..\:/Users/nikoa/AndroidStudioProjects/oops/app/src/main/res/layout/fragment_log_out.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/nikoa/AndroidStudioProjects/oops/app/src/main/res/layout/fragment_slideshow.xml" value="0.33" />
+        <entry key="..\:/Users/nikoa/AndroidStudioProjects/oops/app/src/main/res/layout/itemforadditemrecycler.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/nikoa/AndroidStudioProjects/oops/app/src/main/res/layout/itemviewforrecycler.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/nikoa/AndroidStudioProjects/oops/app/src/main/res/layout/nav_header_main2.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/nikoa/AndroidStudioProjects/oops/app/src/main/res/menu/activity_main2_drawer.xml" value="0.36666666666666664" />

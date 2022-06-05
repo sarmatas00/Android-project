@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
@@ -37,9 +38,10 @@ public class GalleryFragment extends Fragment {
 
     private FragmentGalleryBinding binding;
     private static ArrayList<EnchancedItem> itemList;
-    private RecyclerView recyclerView;
+    private RecyclerView rec;
     private MyDBHandler db;
     private String username;
+    private ItemAdapter adapter;
 
 
 
@@ -60,8 +62,7 @@ public class GalleryFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //finds the recycler from layout
-        RecyclerView rec=view.findViewById(R.id.recycler);
-        System.out.println(rec);
+        rec=view.findViewById(R.id.recycler);
         db = new MyDBHandler(getActivity(), null, null, 1);
 
         //get users items from db
@@ -72,8 +73,12 @@ public class GalleryFragment extends Fragment {
                 username=s;
                 itemList=new ArrayList<>();
                 itemList=db.findUserData(username);
-                for(EnchancedItem x:itemList){
-                    System.out.println(x.getName());
+
+                TextView alert = view.findViewById(R.id.noItemsAlert2);
+                if(itemList.size()<=0) {
+                    alert.setVisibility(View.VISIBLE);
+                }else{
+                    alert.setVisibility(View.INVISIBLE);
                 }
 
 
@@ -86,29 +91,31 @@ public class GalleryFragment extends Fragment {
 
     }
 
-    //seeds db with premade items
-    private void enterData(){
-            db.addItem(new Item("chicken"));
-            db.addItem(new Item("pork"));
-            db.addItem(new Item("beef"));
-            db.addItem(new Item("poutsaki"));
-
-    }
 
 
 
     //TODO TRY REFRESH ON DELETE
     //Standard code for Recycler creation
     private void setAdapter(RecyclerView recyclerView){
-        ItemAdapter adapter=new ItemAdapter(itemList,username);
+        adapter=new ItemAdapter(itemList,username);
         RecyclerView.LayoutManager layoutManager=new LinearLayoutManager(getActivity().getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
+
     }
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        itemList=db.findUserData(username);
+        adapter=new ItemAdapter(itemList,username);
+        rec.setAdapter(adapter);
+
     }
 }

@@ -6,6 +6,37 @@
     android:layout_height="match_parent"
     tools:context=".ui.home.HomeFragment">
 
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="20dp"
+        android:paddingBottom="5dp"
+        android:popupBackground="#DFFFFFFF"
+
+        />
+
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/guideline5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/piechart"
+        app:layout_constraintGuide_percent="0.1"
+        />
+
 
 
         <com.github.mikephil.charting.charts.PieChart
@@ -15,7 +46,7 @@
             app:layout_constraintBottom_toTopOf="@+id/guideline4"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/guideline5"  />
 
            <androidx.constraintlayout.widget.Guideline
                android:layout_width="wrap_content"
@@ -53,83 +84,6 @@
             </ScrollView>
 
 
-<!--            <TextView-->
-<!--                android:id="@+id/view1"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="0dp"-->
-<!--                android:background="@color/purple_200"-->
-<!--                app:layout_constraintBottom_toTopOf="@+id/view2"-->
-<!--                app:layout_constraintEnd_toStartOf="@+id/stat1"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/guideline4" />-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/stat1"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="0dp"-->
-<!--                app:layout_constraintBottom_toTopOf="@+id/stat2"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintStart_toEndOf="@+id/view1"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/guideline4"  />-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/view2"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="0dp"-->
-<!--                android:background="@color/purple_700"-->
-<!--                app:layout_constraintBottom_toTopOf="@+id/view3"-->
-<!--                app:layout_constraintEnd_toStartOf="@+id/stat2"-->
-
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/view1" />-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/stat2"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="0dp"-->
-<!--                app:layout_constraintBottom_toTopOf="@+id/stat3"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintStart_toEndOf="@+id/view2"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/stat1" />-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/view3"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="0dp"-->
-<!--                android:background="@color/black"-->
-<!--                app:layout_constraintBottom_toTopOf="@+id/view4"-->
-<!--                app:layout_constraintEnd_toStartOf="@+id/stat3"-->
-
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/view2" />-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/stat3"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="0dp"-->
-<!--                app:layout_constraintBottom_toTopOf="@+id/stat4"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintStart_toEndOf="@+id/view3"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/stat2" />-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/view4"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="0dp"-->
-<!--                android:background="@color/purple_700"-->
-<!--                app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                app:layout_constraintEnd_toStartOf="@+id/stat4"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/view3" />-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/stat4"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="0dp"-->
-<!--                app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintStart_toEndOf="@+id/view4"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/stat3" />-->
 
 
 

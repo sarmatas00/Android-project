@@ -6,8 +6,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 //This class handles the SQL database here we create the tables and create methods for them
@@ -23,7 +26,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
     public static final String COLUMN_NAME="name";
     public static final String TABLE_ACCOUNT_HAS_ITEMS="userHasItems";
     public static final String COLUMN_AMOUNT="amount";
-    public static final String COLUMN_COST="cost";
+    public static final String COLUMN_IMEROMINIA="imerominia";
 
     public MyDBHandler(Context context,String name,SQLiteDatabase.CursorFactory factory,int version){
         super(context,DATABASE_NAME,factory,DATABASE_VERSION);
@@ -44,17 +47,22 @@ public class MyDBHandler extends SQLiteOpenHelper {
                 TABLE_ITEMS+"("+
                 COLUMN_NAME+" TEXT PRIMARY KEY" + ")";
 
+
         //ACCOUNT_HAS_ITEMS(USERNAME,NAME,AMOUNT) NAME IS ITEMNAME USERNAME+NAME PRIMARY KEY
+
         String CREATE_ACCOUNT_HAS_ITEMS_TABLE="CREATE TABLE IF NOT EXISTS "+
                 TABLE_ACCOUNT_HAS_ITEMS+"("+
                 COLUMN_USERNAME+" TEXT,"+
                 COLUMN_NAME+" TEXT,"+
-                COLUMN_AMOUNT+" TEXT, PRIMARY KEY ("+COLUMN_USERNAME+", "+COLUMN_NAME+"))";
-
+                COLUMN_AMOUNT+" TEXT,"+
+                COLUMN_IMEROMINIA+" TEXT, PRIMARY KEY ("+COLUMN_USERNAME+", "+COLUMN_NAME+", "+COLUMN_IMEROMINIA+"))";
 
         sqLiteDatabase.execSQL(CREATE_ACCOUNTS_TABLE);
         sqLiteDatabase.execSQL(CREATE_ITEMS_TABLE);
         sqLiteDatabase.execSQL(CREATE_ACCOUNT_HAS_ITEMS_TABLE);
+
+
+        System.out.println("Tables created");
 
 
     }
@@ -89,19 +97,22 @@ public class MyDBHandler extends SQLiteOpenHelper {
         }
         return false;
     }
-    public void addItemToAccount(String username,Item item,int amount){
+    public void addItemToAccount(String username,Item item,int amount,String date){
         ContentValues values=new ContentValues();
         values.put(COLUMN_USERNAME,username);
         values.put(COLUMN_NAME,item.getName());
+        values.put(COLUMN_IMEROMINIA,date);
+        values.put(COLUMN_AMOUNT,amount);
         SQLiteDatabase sqLiteDatabase=this.getWritableDatabase();
-        String previousAmount=findPreviousAmount(username,item.getName());
-        if(previousAmount!=null) {
-            values.put(COLUMN_AMOUNT,Integer.toString(amount+Integer.parseInt(previousAmount)));
-            sqLiteDatabase.update(TABLE_ACCOUNT_HAS_ITEMS,values,COLUMN_USERNAME+"=? AND "+COLUMN_NAME+"=?",new String[]{username,item.getName()});
-        }else{
-            values.put(COLUMN_AMOUNT,Integer.toString(amount));
+//        String previousAmount=findPreviousAmount(username,item.getName());
+//        if(previousAmount!=null) {
+//            values.put(COLUMN_AMOUNT,Integer.toString(amount+Integer.parseInt(previousAmount)));
+//            sqLiteDatabase.update(TABLE_ACCOUNT_HAS_ITEMS,values,COLUMN_USERNAME+"=? AND "+COLUMN_NAME+"=?",new String[]{username,item.getName()});
+//        }else{
+//            values.put(COLUMN_AMOUNT,Integer.toString(amount));
             sqLiteDatabase.insert(TABLE_ACCOUNT_HAS_ITEMS,null,values);
-        }
+//        }
+
         sqLiteDatabase.close();
 
     }
@@ -134,6 +145,9 @@ public class MyDBHandler extends SQLiteOpenHelper {
         String query="SELECT * FROM "+TABLE_ITEMS;
         ArrayList<Item> allItems=new ArrayList<>();
         SQLiteDatabase sqLiteDatabase=this.getWritableDatabase();
+
+
+
         Cursor cursor=sqLiteDatabase.rawQuery(query,null);
         if(cursor.moveToFirst()){
             do{
@@ -179,29 +193,65 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
         ArrayList<EnchancedItem> userItems=new ArrayList<>();
         SQLiteDatabase sqLiteDatabase=this.getWritableDatabase();
+
         Cursor cursor=sqLiteDatabase.rawQuery(query,null);
         if(cursor.moveToFirst()){
-            Double value=null;
+            boolean exists=false;
             do{
-                value=Double.parseDouble(cursor.getString(2));
-                userItems.add(new EnchancedItem(cursor.getString(1),value));
+                for(EnchancedItem item:userItems){
+                    if(item.getName().equals(cursor.getString(1))){
+                        exists=true;
+                    }
+                }
+                if(!exists){
+                    userItems.add(new EnchancedItem(cursor.getString(1),getTotalValue(sqLiteDatabase.rawQuery(query,null),cursor.getString(1))));
+                }
+                exists=false;
             }while(cursor.moveToNext());
             cursor.close();
         }
         sqLiteDatabase.close();
 
-        return userData;
+        return userItems;
     }
 
-    public Map<String, String> findUserDataForChart(String username){
-        String query="SELECT * FROM "+TABLE_ACCOUNT_HAS_ITEMS+" WHERE "+COLUMN_USERNAME+" = '"+username+"'";
+    public Map<String, String> findUserDataForChart(String username,String usecase){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
+        String currentDate=dateFormat.format(new Date());
+        switch (usecase){
+            case "total":
+                usecase="%";
+                break;
+            case "annual":
+                usecase="date"+(new SimpleDateFormat("yyyy", Locale.getDefault())).format(new Date())+"%";
+                break;
+            case "month":
+                usecase="date"+(new SimpleDateFormat("yyyyMM", Locale.getDefault())).format(new Date())+"%";
+                break;
+            case "day":
+                usecase="date"+(new SimpleDateFormat("yyyyMMdd", Locale.getDefault())).format(new Date())+"%";
+                break;
+
+        }
+        String query="SELECT * FROM "+TABLE_ACCOUNT_HAS_ITEMS+" WHERE ("+COLUMN_USERNAME+" = '"+username+"' AND "+COLUMN_IMEROMINIA+" LIKE '"+usecase+"')";
         Map<String,String> userData=new HashMap<>();
         SQLiteDatabase sqLiteDatabase=this.getWritableDatabase();
         Cursor cursor=sqLiteDatabase.rawQuery(query,null);
+        System.out.println("CURSOOOOOOR"+cursor.getCount());
+
         if(cursor.moveToFirst()){
-            Double value=null;
+            boolean exists=false;
             do{
-                userData.put(cursor.getString(1),cursor.getString(2));
+
+                for(Map.Entry<String,String> item:userData.entrySet()){
+                    if(item.getKey().equals(cursor.getString(1))){
+                        exists=true;
+                    }
+                }
+                if(!exists){
+                    userData.put(cursor.getString(1),Double.toString(getTotalValue(sqLiteDatabase.rawQuery(query,null),cursor.getString(1))));
+                }
+                exists=false;
             }while(cursor.moveToNext());
             cursor.close();
         }
@@ -255,13 +305,22 @@ public class MyDBHandler extends SQLiteOpenHelper {
 //    }
     public boolean deleteItemFromUser(String username,String itemName){
         SQLiteDatabase db=this.getWritableDatabase();
-        System.out.println("WHERE "+COLUMN_USERNAME+"= '"+username+"' AND "+COLUMN_NAME+"= '"+itemName+"'");
         return db.delete(TABLE_ACCOUNT_HAS_ITEMS,COLUMN_USERNAME+"= '"+username+"' AND "+COLUMN_NAME+"= '"+itemName+"'",null)>0;
         //return false;
     }
 
-    public double findTotalSpentOnItem(String username,String itemName){
-        return 0;
+    public double getTotalValue(Cursor cursor,String itemName){
+        double totalValue=0;
+        if(cursor.moveToFirst()){
+            do{
+                if(cursor.getString(1).equals(itemName)){
+                    totalValue+=Double.parseDouble(cursor.getString(2));
+                }
+            }while(cursor.moveToNext());
+        }
+
+        return totalValue;
+
     }
 
 
