@@ -7,6 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AddItem"
+
     >
 
     <androidx.appcompat.widget.Toolbar
@@ -21,15 +22,15 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Item price"
-        android:textStyle="bold"
-        android:textSize="25sp"
-        android:textColor="@color/white"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Item price"
+            android:textStyle="bold"
+            android:textSize="25sp"
+            android:textColor="@color/white"
 
-        android:id="@+id/toolbar_title" />
+            android:id="@+id/toolbar_title" />
     </androidx.appcompat.widget.Toolbar>
 
 
@@ -43,6 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:textAlignment="center"
+        android:text="GGG"
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/enterAmount"
@@ -53,14 +55,15 @@
 
     <EditText
         android:id="@+id/enterAmount"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
+        app:layout_constraintWidth_percent="0.5"
         android:layout_height="wrap_content"
-        android:layout_margin="40dp"
         android:hint="Enter value of selected item"
+
         android:inputType="numberDecimal"
+
         app:layout_constraintBottom_toTopOf="@id/guideline3"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.6"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/itemName"
         app:layout_constraintVertical_bias="0.803" />
@@ -76,7 +79,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/guideline3"
         app:layout_constraintVertical_bias="0.173"
-        android:padding="20dp"
+        android:paddingHorizontal="30dp"
+        android:paddingVertical="15dp"
         android:background="@color/purple_500"
         android:textColor="@color/white"/>
 
@@ -85,7 +89,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Return"
-        android:padding="20dp"
+        android:paddingHorizontal="30dp"
+        android:paddingVertical="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_chainStyle="spread"
@@ -100,6 +105,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="315dp"
+        app:layout_constraintGuide_percent="0.7"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>

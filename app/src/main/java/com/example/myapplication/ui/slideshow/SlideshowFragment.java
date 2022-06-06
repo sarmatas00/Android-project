@@ -103,7 +103,10 @@ public class SlideshowFragment extends Fragment {
                 TextView alert = (getActivity()).findViewById(R.id.noItemsAlert);
                 alert.setVisibility(View.INVISIBLE);
             }
-            if(!newItemName.equals("")) {                               //If item name not empty add item to db
+            if(newItemName.length()>15){
+                Toast.makeText(getActivity(), "Item name must be at most 15 characters long", Toast.LENGTH_SHORT).show();             //Display error message if item name is too big
+            }
+            else if(!newItemName.equals("")) {                               //If item name not empty add item to db
                 Item newItem = new Item(newItemName);
 
                 db.addItem(newItem);                                    //register new item to db

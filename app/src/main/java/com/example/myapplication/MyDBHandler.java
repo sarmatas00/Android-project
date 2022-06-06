@@ -95,7 +95,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
             ContentValues values = new ContentValues();
             values.put(COLUMN_NAME, it.getName());
             SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-            sqLiteDatabase.insert(TABLE_ITEMS, null, values);
+            sqLiteDatabase.insertWithOnConflict(TABLE_ITEMS, null, values, SQLiteDatabase.CONFLICT_REPLACE);
             sqLiteDatabase.close();
             return true;
         }
@@ -110,7 +110,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
         values.put(COLUMN_IMEROMINIA,date);
         values.put(COLUMN_AMOUNT,amount.toString());
         SQLiteDatabase sqLiteDatabase=this.getWritableDatabase();
-        sqLiteDatabase.insert(TABLE_ACCOUNT_HAS_ITEMS,null,values);
+        sqLiteDatabase.insertWithOnConflict(TABLE_ACCOUNT_HAS_ITEMS,null,values,SQLiteDatabase.CONFLICT_REPLACE);
         sqLiteDatabase.close();
 
     }
@@ -181,6 +181,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
             cursor.close();
         }
         sqLiteDatabase.close();
+
 
         return userItems;
     }

@@ -76,12 +76,11 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.MyViewHolder> 
         String name=itemList.get(position).getName();
         Double value=itemList.get(position).getValue();
         holder.itemTxt.setText(name);                               //set item name to recycler view
-        holder.totalSpentOnItem.setText(value.toString()+"$");      //set total spent on item to view
+        holder.totalSpentOnItem.setText(String.format("%.1f",value)+"$");      //set total spent on item to view
 
 
 
     }
-
     @Override
     public int getItemCount() {
         return itemList.size();

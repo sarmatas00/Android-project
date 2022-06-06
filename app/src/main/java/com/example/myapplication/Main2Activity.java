@@ -15,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.myapplication.databinding.ActivityMain2Binding;
 
 
-//TODO LOGO KAI STELNE PICS OTI TELIWNEISS
+
 //Main activity contains all the menu option fragments inside it, gets called from log-in and sign-up
 public class Main2Activity extends AppCompatActivity {
 
