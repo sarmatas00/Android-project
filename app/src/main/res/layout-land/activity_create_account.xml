@@ -20,6 +20,7 @@
         android:textColor="@color/white"
         android:textSize="50sp"
         android:textStyle="bold"
+
         app:layout_constraintBottom_toTopOf="@id/signUpUsernameIn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,7 +30,7 @@
         android:id="@+id/signUpUsernameIn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="10dp"
+
         android:textColorHint="@color/white"
         android:textColor="@color/white"
         android:background="@drawable/search_view"
@@ -37,61 +38,67 @@
         android:ems="10"
         android:hint="Username"
         android:inputType="textPersonName"
+        android:layout_marginHorizontal="100dp"
 
-        android:padding="20dp"
+        android:padding="15dp"
+
         app:layout_constraintBottom_toTopOf="@id/signUpEmailIn"
+
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.15"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signUpLabel"
         tools:ignore="SpeakableTextPresentCheck" />
-
 
     <EditText
         android:id="@+id/signUpEmailIn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="10dp"
-        android:background="@drawable/search_view"
         android:ems="10"
+        android:inputType="textEmailAddress"
+        android:background="@drawable/search_view"
 
         android:hint="Email"
-        android:inputType="textEmailAddress"
-        android:padding="20dp"
-
-        android:textColor="@color/white"
         android:textColorHint="@color/white"
+        android:textColor="@color/white"
+        android:layout_marginHorizontal="100dp"
+
+        android:padding="15dp"
+
         app:layout_constraintBottom_toTopOf="@id/signUpPassIn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.473"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signUpUsernameIn"
         tools:ignore="SpeakableTextPresentCheck" />
 
-    <EditText
-            android:id="@+id/signUpPassIn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPassword"
-            android:textColorHint="@color/white"
-            android:textColor="@color/white"
-            android:background="@drawable/search_view"
 
-            android:hint="Password"
-            android:layout_marginHorizontal="10dp"
-            android:padding="20dp"
-            app:layout_constraintBottom_toTopOf="@id/button3"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/signUpEmailIn"
-            tools:ignore="SpeakableTextPresentCheck" />
+
+    <EditText
+        android:id="@+id/signUpPassIn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:textColorHint="@color/white"
+        android:textColor="@color/white"
+        android:background="@drawable/search_view"
+
+        android:hint="Password"
+        android:layout_marginHorizontal="100dp"
+
+        android:padding="15dp"
+        app:layout_constraintBottom_toTopOf="@id/button3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signUpEmailIn"
+        tools:ignore="SpeakableTextPresentCheck" />
 
 
     <Button
         android:id="@+id/button3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+
         android:padding="20dp"
         android:backgroundTint="@color/white"
         android:textStyle="bold"
