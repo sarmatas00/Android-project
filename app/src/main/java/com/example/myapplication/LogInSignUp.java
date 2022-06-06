@@ -29,7 +29,7 @@ public class LogInSignUp extends AppCompatActivity {
         Bundle extras=getIntent().getExtras();
         db=new MyDBHandler(this,null,null,1);
         //add demo accounts when db is created
-        insertDemoAccounts();
+        seed();
         if(extras!=null){
             username.setText(extras.getCharSequence("newName"));
         }
@@ -73,11 +73,22 @@ public class LogInSignUp extends AppCompatActivity {
     }
 
     //Inserts demo account into the database
-    public void insertDemoAccounts() {
+    public void seed() {
         Account account = new Account();
         account.setUsername("admin");
         account.setEmail("admin@admin.com");
         account.setPassword("12345");
         db.addAccount(account);
+        db.deleteItemFromUser("admin","chicken");
+        db.deleteItemFromUser("admin","balls");
+        db.deleteItemFromUser("admin","curry");
+        db.deleteItemFromUser("admin","dicks");
+
+        db.addItem(new Item("chicken"));
+            db.addItem(new Item("dicks"));
+            db.addItem(new Item("balls"));
+            db.addItem(new Item("curry"));
+
+
     }
 }

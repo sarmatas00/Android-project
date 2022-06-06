@@ -15,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.myapplication.databinding.ActivityMain2Binding;
 
 
-
+//TODO LOGO KAI STELNE PICS OTI TELIWNEISS
 //Main activity contains all the menu option fragments inside it, gets called from log-in and sign-up
 public class Main2Activity extends AppCompatActivity {
 
@@ -51,7 +51,6 @@ public class Main2Activity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);    //setup action bar with nav controller
         NavigationUI.setupWithNavController(navigationView, navController);                                 //set up the navigation menu
 
-        seed();                                                                                 //seed the database for items the first time
 
     }
 
@@ -79,15 +78,7 @@ public class Main2Activity extends AppCompatActivity {
     }
 
 
-    //seeds database with premade items which can be used immediately by users
-    public  void seed(){
-        MyDBHandler db=new MyDBHandler(this,null,null,1);
-        db.addItem(new Item("chicken"));
-        db.addItem(new Item("dicks"));
-        db.addItem(new Item("balls"));
-        db.addItem(new Item("curry"));
 
-    }
 
     public String getUsername(){
         return username;

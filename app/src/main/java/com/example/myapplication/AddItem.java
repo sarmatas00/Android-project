@@ -68,7 +68,7 @@ public class AddItem extends AppCompatActivity {
             }
             MyDBHandler dbHandler = new MyDBHandler(view.getContext(), null, null, 1);
             if(username!=null) {
-                dbHandler.addItemToAccount(username,new Item(value),Integer.parseInt(amountValue),getDate());
+                dbHandler.addItemToAccount(username,new Item(value),Double.parseDouble(amountValue),getDate());
             }
             finish();                                       //return to the previous fragment
 
