@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">Budget</string>
     <string name="title_activity_main2">Main2Activity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -10,20 +10,30 @@
     <string name="sign_up">SIGN-UP</string>
     <string name="log_in">LOG-IN</string>
 
+    <string name="search">Search</string>
     <string name="itemCost">Item Cost</string>
     <string name="itemAmount">Item Amount</string>
     <string name="itemName">Item Name</string>
     <string name="addItem">Add Item</string>
     <string name="logOut">Log-Out</string>
     <string name="add1">Add</string>
-    <string name="goBack">Go Back</string>
-    <string name="areYouSure">Log-Out?</string>
+    <string name="goBack">Return</string>
+    <string name="areYouSure">Are you sure you want to Log-Out?</string>
     <string name="signUpUsernameOut">Username</string>
     <string name="signUpEmailOut">E-Mail</string>
     <string name="signUpPassOut">Password</string>
     <string name="menu_home">Home</string>
     <string name="menu_gallery">My items</string>
     <string name="menu_slideshow">Slideshow</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string-array name="dropdown">
+        <item>Total Expenses</item>
+        <item>Daily Expenses</item>
+        <item>Monthly Expenses</item>
+        <item>Annual Expenses</item>
+    </string-array>
+
+
+
+
 </resources>

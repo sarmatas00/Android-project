@@ -1,35 +1,21 @@
 package com.example.myapplication;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.view.View;
 import android.view.Menu;
 import android.widget.TextView;
-
-import com.example.myapplication.ui.gallery.GalleryFragment;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.myapplication.databinding.ActivityMain2Binding;
 
-import org.eazegraph.lib.charts.PieChart;
-import org.eazegraph.lib.models.PieModel;
 
-import java.util.ArrayList;
+
 //Main activity contains all the menu option fragments inside it, gets called from log-in and sign-up
 public class Main2Activity extends AppCompatActivity {
 
@@ -38,16 +24,19 @@ public class Main2Activity extends AppCompatActivity {
     private ActivityMain2Binding binding;
     private TextView navUser,navEm;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Intent intent=getIntent();
         username=intent.getStringExtra("userName");
         super.onCreate(savedInstanceState);
 
+        HomeViewModel viewModel=new ViewModelProvider(this).get(HomeViewModel.class);
+        viewModel.setText(username);                    //set username to the viewmodel to share it between fragments
 
         binding = ActivityMain2Binding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        setSupportActionBar(binding.appBarMain2.toolbar);
+        setSupportActionBar(binding.appBarMain2.toolbar);           //set toolbar as the action bar
 
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
@@ -59,13 +48,8 @@ public class Main2Activity extends AppCompatActivity {
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main2);
-        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-        NavigationUI.setupWithNavController(navigationView, navController);
-        System.out.println("username "+username);
-
-        seed();
-
-
+        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);    //setup action bar with nav controller
+        NavigationUI.setupWithNavController(navigationView, navController);                                 //set up the navigation menu
 
 
     }
@@ -83,7 +67,6 @@ public class Main2Activity extends AppCompatActivity {
         Account acc=db.findAccount(username);
         email=acc.getEmail();
         navEm.setText(email);
-        System.out.println("navuserview "+navUser);
         return true;
     }
 
@@ -93,15 +76,9 @@ public class Main2Activity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
-    //seeds database
-    //TODO seed properly and use the data on addItems menu
-    public  void seed(){
-        MyDBHandler db=new MyDBHandler(this,null,null,1);
-        db.addItem(new Item("chicken",2));
-        db.addItem(new Item("dicks",2));
-        db.addItem(new Item("balls",2));
-        db.addItem(new Item("curry",2));
-    }
+
+
+
 
     public String getUsername(){
         return username;
