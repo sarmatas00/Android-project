@@ -53,8 +53,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.MyViewHolder> 
                     String itemName=itemList.get(getAdapterPosition()).getName();       //get item name
                     MyDBHandler db=new MyDBHandler(view.getContext(), null,null,1);
                     db.deleteItemFromUser(username,itemName);
-                    Activity main= (Activity) view.getContext();
-                    main.onBackPressed();                               //go back to main activity
+                    notifyItemRemoved(getAdapterPosition());                            //refresh recycler view
 
                 }
             });
