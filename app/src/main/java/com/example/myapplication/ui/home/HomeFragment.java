@@ -1,5 +1,6 @@
 package com.example.myapplication.ui.home;
 
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.myapplication.HomeViewModel;
 import com.example.myapplication.Item;
+import com.example.myapplication.ItemAdapter;
 import com.example.myapplication.Main2Activity;
 import com.example.myapplication.MyDBHandler;
 import com.example.myapplication.R;
@@ -263,6 +265,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemSelected
                 stat.setLayoutParams(params);
                 stat.setText(item+" : "+currValue+"$");                             //set the text of the text view
                 stat.setTextSize(20);
+                stat.setShadowLayer(0.01f,-2,2,getResources().getColor(R.color.black));
                 if(i<=5){                                                           //set the text colors of the views based on the colors in the chart
                     stat.setTextColor(colors.get(i-1));
                 }else{
@@ -291,6 +294,16 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemSelected
     }
 
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    }
     private String getDate(){                   //get the current date in particular format for use in the database
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
         String currentDate=dateFormat.format(new Date());

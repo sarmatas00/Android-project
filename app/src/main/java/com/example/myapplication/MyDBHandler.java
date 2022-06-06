@@ -103,12 +103,12 @@ public class MyDBHandler extends SQLiteOpenHelper {
     }
 
     //add an item with its amount linked to a specific account and date as a log
-    public void addItemToAccount(String username,Item item,int amount,String date){
+    public void addItemToAccount(String username,Item item,Double amount,String date){
         ContentValues values=new ContentValues();
         values.put(COLUMN_USERNAME,username);
         values.put(COLUMN_NAME,item.getName());
         values.put(COLUMN_IMEROMINIA,date);
-        values.put(COLUMN_AMOUNT,amount);
+        values.put(COLUMN_AMOUNT,amount.toString());
         SQLiteDatabase sqLiteDatabase=this.getWritableDatabase();
         sqLiteDatabase.insert(TABLE_ACCOUNT_HAS_ITEMS,null,values);
         sqLiteDatabase.close();
